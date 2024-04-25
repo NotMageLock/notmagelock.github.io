@@ -1,5 +1,3 @@
-remote_theme: pages-themes/midnight@v0.2.0
+theme: jekyll-theme-minimal
 title: Silly site!
 description: Testing testing one seven eighty
-plugins:
-- jekyll-remote-theme
