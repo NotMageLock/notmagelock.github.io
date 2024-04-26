@@ -1,14 +1,12 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Doodle Jump | MageLock's Site</title>
+  <title>Basic Doodle Jump HTML Game</title>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <style>
   html, body {
     height: 100%;
     margin: 0;
-    overflow: hidden; /* Prevent scrolling on mobile */
   }
 
   body {
@@ -23,6 +21,7 @@
   </style>
 </head>
 <body>
+<canvas width="375" height="667" id="game"></canvas>
 <script>
 const canvas = document.getElementById('game');
 const context = canvas.getContext('2d');
@@ -217,31 +216,6 @@ document.addEventListener('keydown', function(e) {
 
 document.addEventListener('keyup', function(e) {
   keydown = false;
-});
-
-// listen to touch events to move doodle on mobile
-let touchStartX = 0;
-
-canvas.addEventListener('touchstart', function(e) {
-  touchStartX = e.touches[0].clientX;
-});
-
-canvas.addEventListener('touchmove', function(e) {
-  const touchX = e.touches[0].clientX;
-  const deltaX = touchX - touchStartX;
-
-  if (deltaX > 0) {
-    playerDir = 1;
-    doodle.dx = 3;
-  } else if (deltaX < 0) {
-    playerDir = -1;
-    doodle.dx = -3;
-  }
-});
-
-canvas.addEventListener('touchend', function() {
-  playerDir = 0;
-  doodle.dx = 0;
 });
 
 // start the game
