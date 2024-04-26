@@ -219,7 +219,7 @@ function update() {
       var cx = powerup[j].x + 0.5 * powerup[j].width,   // x of shape center
       cy = powerup[j].y + 0.5 * powerup[j].height; //y of shape center
       ctx.translate(cx, cy);  //translate to center of shape
-      ctx.rotate( (Math.PI / 180) * 45);//rotate 25 degrees.
+      ctx.rotate( (Math.PI / 180) * 45);//rotate by 25 degrees.
       if(powerup[j].effect  === 'tele'){
         ctx.rotate( (Math.PI / 180) * powerup[j].rotate);//rotate 25 degrees.
         powerup[j].rotate = (Math.PI / 180) * powerup[j].rotate;
