@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Platformer | MageLock's Site</title>
+<style>
+    body {
+        margin: 0;
+        padding: 0;
+        overflow: hidden;
+        font-family: Arial, sans-serif;
+    }
+    #player {
+        position: absolute;
+        width: 50px;
+        height: 50px;
+        background-color: red;
+        bottom: 0;
+        left: 0;
+    }
+    #mobileControls {
+        position: fixed;
+        bottom: 10px;
+        left: 10px;
+        display: none;
+    }
+    .controlButton {
+        width: 50px;
+        height: 50px;
+        margin: 5px;
+        background-color: #ccc;
+        border: none;
+        border-radius: 10px;
+        cursor: pointer;
+    }
+</style>
+</head>
+<body>
+<div id="player"></div>
+<div id="mobileControls">
+    <button class="controlButton" id="moveLeft">◄</button>
+    <button class="controlButton" id="moveRight">►</button>
+    <button class="controlButton" id="jump">Jump</button>
+    <button class="controlButton" id="sprint">Sprint</button>
+</div>
+<script>
+    // Get player element
+    const player = document.getElementById('player');
+    
+    // Player properties
+    let posX = 0;
+    let posY = 0;
+    let isJumping = false;
+    let isSprinting = false;
+    
+    // Movement speed
+    const speed = 5;
+    const jumpHeight = 100;
+    
+    // Key codes
+    const KEY_LEFT = 37;
+    const KEY_RIGHT = 39;
+    const KEY_JUMP = 32; // Spacebar
+    const KEY_SPRINT = 16; // Shift
+    
+    // Mobile controls
+    const mobileControls = document.getElementById('mobileControls');
+    const moveLeftBtn = document.getElementById('moveLeft');
+    const moveRightBtn = document.getElementById('moveRight');
+    const jumpBtn = document.getElementById('jump');
+    const sprintBtn = document.getElementById('sprint');
+    
+    // Event listeners for key presses
+    document.addEventListener('keydown', function(event) {
+        if (event.keyCode === KEY_LEFT || event.key === 'a') {
+            moveLeft();
+        } else if (event.keyCode === KEY_RIGHT || event.key === 'd') {
+            moveRight();
+        } else if (event.keyCode === KEY_JUMP || event.key === ' ') {
+            jump();
+        } else if (event.keyCode === KEY_SPRINT || event.key === 'Shift') {
+            isSprinting = true;
+        }
+    });
+    
+    document.addEventListener('keyup', function(event) {
+        if (event.keyCode === KEY_SPRINT || event.key === 'Shift') {
+            isSprinting = false;
+        }
+    });
+    
+    // Event listeners for mobile controls
+    moveLeftBtn.addEventListener('touchstart', moveLeft);
+    moveRightBtn.addEventListener('touchstart', moveRight);
+    jumpBtn.addEventListener('touchstart', jump);
+    sprintBtn.addEventListener('touchstart', function() {
+        isSprinting = true;
+    });
+    sprintBtn.addEventListener('touchend', function() {
+        isSprinting = false;
+    });
+    
+    // Move player left
+    function moveLeft() {
+        posX -= isSprinting ? speed * 2 : speed;
+        updatePlayerPosition();
+    }
+    
+    // Move player right
+    function moveRight() {
+        posX += isSprinting ? speed * 2 : speed;
+        updatePlayerPosition();
+    }
+    
+    // Player jump
+    function jump() {
+        if (!isJumping) {
+            isJumping = true;
+            let jumpCount = 0;
+            const jumpInterval = setInterval(function() {
+                posY += 5;
+                jumpCount += 5;
+                if (jumpCount >= jumpHeight) {
+                    clearInterval(jumpInterval);
+                    isJumping = false;
+                }
+                updatePlayerPosition();
+            }, 20);
+        }
+    }
+    
+    // Update player position
+    function updatePlayerPosition() {
+        player.style.left = posX + 'px';
+        player.style.bottom = posY + 'px';
+    }
+    
+    // Toggle mobile controls visibility
+    function toggleMobileControls() {
+        mobileControls.style.display = mobileControls.style.display === 'none' ? 'block' : 'none';
+    }
+</script>
+<button onclick="toggleMobileControls()">Toggle Mobile Controls</button>
+</body>
+</html>
