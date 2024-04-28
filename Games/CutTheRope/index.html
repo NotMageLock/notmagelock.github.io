@@ -1,10 +1,10 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html>
 <head>
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
 
-    <title>Cut the Rope</title>
+    <title>Cut the Rope | MageLock's Site</title>
     <link rel="canonical" href="http://windyboy.freevnn.com" />
     <meta name="description" content="Play Cut the Rope! A mysterious package has arrived, and the little monster inside has only one request… CANDY!">
 
@@ -20,9 +20,9 @@
     <meta property="og:image" content="http://windyboy.freevnn.com/games/ctr/fb.png" />
     <meta property="og:site_name" content="Cut the Rope" />
 
-    <meta name="viewport" content="width=1024, initial-scale=1, maximum-scale=1, user-scalable=no"/>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0;">
-	<script type="text/javascript" src="/js/detectmobilebrowser.js" ></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <script type="text/javascript" src="/js/detectmobilebrowser.js" ></script>
     <link href="css/ctr.css?438" rel="stylesheet" type="text/css">
     <script src="scripts/sm2.js?438" type="text/javascript"></script>
     <script src="scripts/libraries.js?438" type="text/javascript"></script>
@@ -30,14 +30,16 @@
     <noscript>
         <link href="css/nojavascript.css?438" rel="stylesheet" type="text/css">
     </noscript>
+
+    <style  type="text/css">
+        .hideBeforeLoad, #loaderWindow, #popupWindow { display: none; }  
+        #gameContainer { width: 100%; height: 100%; }
+        #gameArea canvas { width: 100%; height: 100%; }
+    </style>
 </head>
 <body class="ctrCursor">
   <div id="lang">
     <div id="fb-root"></div>
-
-    <style  type="text/css">
-        .hideBeforeLoad, #loaderWindow, #popupWindow { display: none; }  
-    </style>
 
     <div id="gameContainer" >
         <div id="game-border">
@@ -65,8 +67,8 @@
                     </div>
                 </div>
                 <div id="miniOptionsMenu">
-					<!--<div id="optionHd"></div>
-					<div id="optionSd"></div>-->
+                    <!--<div id="optionHd"></div>
+                    <div id="optionSd"></div>-->
                     <div id="optionSound" class="ctrPointer" ></div>
                     <div id="optionMsg"></div>
                 </div>
@@ -208,8 +210,5 @@
     </div>
 
   </div>
-
-
 </body>
 </html>
-
