@@ -7,3 +7,4 @@
 [Doodle Jump](https://notmagelock.github.io/Games/DoodleJump/) <br>
 [Cut The Rope](https://notmagelock.github.io/Games/CutTheRope/) <br>
 [Stickman Hook](https://notmagelock.github.io/Games/StickmanHook/) <br>
+[Candy Crush](https://notmagelock.github.io/Games/CandyCrush/) <br>
