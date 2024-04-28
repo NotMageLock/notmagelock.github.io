@@ -5,4 +5,5 @@
 [Snake](https://notmagelock.github.io/Games/Snake/) <br>
 [Tetris](https://notmagelock.github.io/Games/Tetris/) <br>
 [Doodle Jump](https://notmagelock.github.io/Games/DoodleJump/) <br>
-[Cut The Rope](https://notmagelock.github.io/Games/CutTheRope) <br>
+[Cut The Rope](https://notmagelock.github.io/Games/CutTheRope/) <br>
+[Stickman Hook](https://notmagelock.github.io/Games/StickmanHook/) <br>
