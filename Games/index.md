@@ -5,6 +5,7 @@
 [Clicker Game](https://notmagelock.github.io/Games/Clicker/) <br>
 [Cut The Rope](https://notmagelock.github.io/Games/CutTheRope/) <br>
 [Doodle Jump](https://notmagelock.github.io/Games/DoodleJump/) <br>
+[Hole-io](https://notmagelock.github.io/Games/HoleIO/) <br>
 [Idle Dice](https://notmagelock.github.io/Games/IdleDice/) <br>
 [Paper-io](https://notmagelock.github.io/Games/Paper-io/) <br>
 [Retro Bowl](https://notmagelock.github.io/Games/RetroBowl/) <br>
