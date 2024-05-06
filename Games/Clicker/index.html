@@ -1,35 +1,35 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Clicker | MageLock's Site</title>
-<style>
-    body {
-        font-family: 'Press Start 2P', cursive;
-        text-align: center;
-        background-color: #f0f0f0;
-    }
-    #clickArea {
-        margin-top: 20px;
-        font-size: 24px;
-    }
-    #shop {
-        display: none;
-        margin-top: 20px;
-        font-size: 16px;
-    }
-    #clickButton {
-        border: 2px solid black;
-        border-radius: 50%;
-        background-color: white;
-        width: 100px;
-        height: 100px;
-        font-family: 'Press Start 2P', cursive;
-        font-size: 16px;
-    }
-</style>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Clicker | MageLock's Site</title>
+    <style>
+        body {
+            font-family: 'Press Start 2P', cursive;
+            text-align: center;
+            background-color: #f0f0f0;
+        }
+        #clickArea {
+            margin-top: 20px;
+            font-size: 24px;
+        }
+        #shop {
+            display: none;
+            margin-top: 20px;
+            font-size: 16px;
+        }
+        #clickButton {
+            border: 2px solid black;
+            border-radius: 50%;
+            background-color: white;
+            width: 100px;
+            height: 100px;
+            font-family: 'Press Start 2P', cursive;
+            font-size: 16px;
+        }
+    </style>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap">
 </head>
 <body>
 
@@ -45,75 +45,138 @@
 </div>
 
 <script>
-let points = 0;
-let clickMultiplier = 1;
-let autoClickers = 0;
-let autoClickRate = 1000; // in milliseconds
+    let points = 0;
+    let clickMultiplier = 1;
+    let autoClickers = 0;
+    let autoClickRate = 1000;
+    let upgradeCounts = {};
 
-const clickButton = document.getElementById("clickButton");
-const clickArea = document.getElementById("clickArea");
-const pointsDisplay = document.getElementById("points");
-const shop = document.getElementById("shop");
+    const clickButton = document.getElementById("clickButton");
+    const clickArea = document.getElementById("clickArea");
+    const pointsDisplay = document.getElementById("points");
+    const shop = document.getElementById("shop");
 
-clickButton.addEventListener("click", () => {
-    points += clickMultiplier;
-    updatePointsDisplay();
-});
-
-function updatePointsDisplay() {
-    pointsDisplay.textContent = points;
-}
-
-function buyClickUpgrade() {
-    if (points >= 10) {
-        points -= 10;
-        clickMultiplier++;
+    clickButton.addEventListener("click", () => {
+        points += clickMultiplier;
         updatePointsDisplay();
-    } else {
-        alert("Not enough points!");
-    }
-}
+    });
 
-function buyAutoClicker() {
-    if (points >= 50) {
-        points -= 50;
-        autoClickers++;
-        setInterval(autoClick, autoClickRate);
+    function updatePointsDisplay() {
+        pointsDisplay.textContent = points;
+    }
+
+    function buyClickUpgrade() {
+        if (points >= 10) {
+            points -= 10;
+            clickMultiplier++;
+            updatePointsDisplay();
+        } else {
+            alert("Not enough points!");
+        }
+    }
+
+    function buyAutoClicker() {
+        if (points >= 50) {
+            points -= 50;
+            autoClickers++;
+            setInterval(autoClick, autoClickRate);
+            updatePointsDisplay();
+        } else {
+            alert("Not enough points!");
+        }
+    }
+
+    function autoClick() {
+        points += clickMultiplier * autoClickers;
         updatePointsDisplay();
-    } else {
-        alert("Not enough points!");
     }
-}
 
-function autoClick() {
-    points += clickMultiplier * autoClickers;
-    updatePointsDisplay();
-}
-
-function buyAutoClickUpgrade() {
-    if (points >= 100) {
-        points -= 100;
-        autoClickRate /= 2; // doubling the auto click speed
-        updatePointsDisplay();
-    } else {
-        alert("Not enough points!");
+    function buyAutoClickUpgrade() {
+        if (points >= 100) {
+            points -= 100;
+            autoClickRate /= 2;
+            updatePointsDisplay();
+        } else {
+            alert("Not enough points!");
+        }
     }
-}
 
-document.addEventListener("keydown", function(event) {
-    if (event.key === "s") {
-        toggleShop();
+    document.addEventListener("keydown", function(event) {
+        if (event.key === "s") {
+            toggleShop();
+        }
+    });
+
+    function toggleShop() {
+        if (shop.style.display === "none") {
+            shop.style.display = "block";
+        } else {
+            shop.style.display = "none";
+        }
     }
-});
 
-function toggleShop() {
-    if (shop.style.display === "none") {
-        shop.style.display = "block";
-    } else {
-        shop.style.display = "none";
+    document.addEventListener("keydown", function(event) {
+        if (event.key === "ArrowUp") {
+            addKonamiInput("Up");
+        } else if (event.key === "ArrowDown") {
+            addKonamiInput("Down");
+        } else if (event.key === "ArrowLeft") {
+            addKonamiInput("Left");
+        } else if (event.key === "ArrowRight") {
+            addKonamiInput("Right");
+        } else if (event.key === "b" || event.key === "B") {
+            addKonamiInput("B");
+        } else if (event.key === "a" || event.key === "A") {
+            addKonamiInput("A");
+        } else {
+            resetKonamiInput();
+        }
+    });
+
+    function addKonamiInput(input) {
+        userInputSequence.push(input);
+        if (userInputSequence.length > 10) {
+            userInputSequence.shift();
+        }
+        checkKonamiCode();
     }
-}
 
+    function resetKonamiInput() {
+        userInputSequence = [];
+    }
+
+    function checkKonamiCode() {
+        var inputSequence = ["Up", "Up", "Down", "Down", "Left", "Right", "Left", "Right", "B", "A"];
+        var userInputSequence = [];
+
+        if (userInputSequence.length >= inputSequence.length) {
+            var konamiEntered = true;
+            for (var i = 0; i < inputSequence.length; i++) {
+                if (inputSequence[i] !== userInputSequence[i]) {
+                    konamiEntered = false;
+                    break;
+                }
+            }
+
+            if (konamiEntered) {
+                var allUpgradesBought7Times = true;
+                for (var upgrade in upgradeCounts) {
+                    if (upgradeCounts.hasOwnProperty(upgrade) && upgradeCounts[upgrade] !== 7) {
+                        allUpgradesBought7Times = false;
+                        break;
+                    }
+                }
+
+                if (allUpgradesBought7Times) {
+                    redirectToSecretWebsite();
+                }
+            }
+        }
+    }
+
+    function redirectToSecretWebsite() {
+        window.location.href = "https://notmagelock.github.io/Games/Clicker/Secret/";
+    }
 </script>
 
 </body>
