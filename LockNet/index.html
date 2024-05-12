@@ -8,33 +8,45 @@
 <body>
     <div id="chat-container">
         <div id="chat-messages"></div>
+        <input type="text" id="username-input" placeholder="Enter your username...">
         <input type="text" id="message-input" placeholder="Type your message...">
         <button onclick="sendMessage()">Send</button>
     </div>
 
     <script>
-        // Open a WebSocket connection to the server
         const socket = new WebSocket('ws://localhost:3000');
 
-        // Function to handle incoming messages from the server
+        socket.onopen = function() {
+            console.log('Connected to WebSocket server');
+        };
+
         socket.onmessage = function(event) {
-            const message = event.data;
+            const message = JSON.parse(event.data);
             displayMessage(message);
         };
 
-        // Function to send a message to the server
         function sendMessage() {
+            const usernameInput = document.getElementById('username-input');
             const messageInput = document.getElementById('message-input');
+            const username = usernameInput.value;
             const message = messageInput.value;
-            socket.send(message);
-            messageInput.value = '';
+
+            if (username && message) {
+                const messageData = {
+                    username: username,
+                    text: message
+                };
+                socket.send(JSON.stringify(messageData));
+                messageInput.value = '';
+            } else {
+                alert('Please enter both a username and a message.');
+            }
         }
 
-        // Function to display a message in the chat
         function displayMessage(message) {
             const chatMessages = document.getElementById('chat-messages');
             const messageElement = document.createElement('div');
-            messageElement.textContent = message;
+            messageElement.textContent = `${message.username}: ${message.text}`;
             chatMessages.appendChild(messageElement);
         }
     </script>
