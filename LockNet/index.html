@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>LockNet</title>
+    <title>LockNet</title>title>
 </head>
 <body>
     <div id="chat-container">
@@ -48,6 +48,9 @@
             const messageElement = document.createElement('div');
             messageElement.textContent = `${message.username}: ${message.text}`;
             chatMessages.appendChild(messageElement);
+
+            // Scroll to bottom of chat container
+            chatMessages.scrollTop = chatMessages.scrollHeight;
         }
     </script>
 </body>
