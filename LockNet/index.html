@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LockNet</title>
+</head>
+<body>
+    <div id="chat-container">
+        <div id="chat-messages"></div>
+        <input type="text" id="message-input" placeholder="Type your message...">
+        <button onclick="sendMessage()">Send</button>
+    </div>
+
+    <script>
+        // Open a WebSocket connection to the server
+        const socket = new WebSocket('ws://localhost:3000');
+
+        // Function to handle incoming messages from the server
+        socket.onmessage = function(event) {
+            const message = event.data;
+            displayMessage(message);
+        };
+
+        // Function to send a message to the server
+        function sendMessage() {
+            const messageInput = document.getElementById('message-input');
+            const message = messageInput.value;
+            socket.send(message);
+            messageInput.value = '';
+        }
+
+        // Function to display a message in the chat
+        function displayMessage(message) {
+            const chatMessages = document.getElementById('chat-messages');
+            const messageElement = document.createElement('div');
+            messageElement.textContent = message;
+            chatMessages.appendChild(messageElement);
+        }
+    </script>
+</body>
+</html>
