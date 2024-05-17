@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Video Speed Up</title>
+</head>
+<body>
+    <h1>Upload and Speed Up Video</h1>
+    <input type="file" id="videoUpload" accept="video/*">
+    <video id="videoPlayer" controls style="display: none;"></video>
+    <a id="downloadLink" style="display: none;">Download Sped Up Video</a>
+
+    <script>
+        document.getElementById('videoUpload').addEventListener('change', function(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+
+            const videoPlayer = document.getElementById('videoPlayer');
+            const url = URL.createObjectURL(file);
+
+            videoPlayer.src = url;
+            videoPlayer.style.display = 'block';
+
+            videoPlayer.addEventListener('loadedmetadata', function() {
+                const originalDuration = videoPlayer.duration;
+                videoPlayer.playbackRate = 10.0;
+                videoPlayer.muted = true;
+
+                // Wait until the video has ended
+                videoPlayer.addEventListener('ended', function() {
+                    // Create a canvas to capture the sped up video frames
+                    const canvas = document.createElement('canvas');
+                    canvas.width = videoPlayer.videoWidth;
+                    canvas.height = videoPlayer.videoHeight;
+                    const ctx = canvas.getContext('2d');
+
+                    // Use MediaRecorder to record the canvas content
+                    const stream = canvas.captureStream();
+                    const recorder = new MediaRecorder(stream, { mimeType: 'video/webm' });
+                    const chunks = [];
+
+                    recorder.ondataavailable = function(event) {
+                        if (event.data.size > 0) {
+                            chunks.push(event.data);
+                        }
+                    };
+
+                    recorder.onstop = function() {
+                        const blob = new Blob(chunks, { type: 'video/webm' });
+                        const downloadLink = document.getElementById('downloadLink');
+                        const downloadUrl = URL.createObjectURL(blob);
+
+                        downloadLink.href = downloadUrl;
+                        downloadLink.download = 'sped_up_video.webm';
+                        downloadLink.style.display = 'block';
+                        downloadLink.textContent = 'Download Sped Up Video';
+                    };
+
+                    recorder.start();
+
+                    // Render each frame of the video to the canvas
+                    let currentTime = 0;
+                    function renderFrame() {
+                        if (currentTime >= originalDuration) {
+                            recorder.stop();
+                            return;
+                        }
+                        videoPlayer.currentTime = currentTime;
+                        ctx.drawImage(videoPlayer, 0, 0, canvas.width, canvas.height);
+                        currentTime += 0.1;
+                        requestAnimationFrame(renderFrame);
+                    }
+                    renderFrame();
+                });
+
+                videoPlayer.currentTime = 0;
+                videoPlayer.play();
+            });
+        });
+    </script>
+</body>
+</html>
