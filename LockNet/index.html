@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LockNet</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <div class="sidebar">
+            <div class="direct-messages">
+                <!-- Placeholder for direct message conversations -->
+                <div>Friend 1</div>
+                <div>Friend 2</div>
+                <div>Friend 3</div>
+            </div>
+            <button class="join-server">Join Public Server</button>
+            <!-- Add account settings, profile pictures, @handles, display names, bios here -->
+            <div class="account-settings">
+                <h2>Account Settings</h2>
+                <input type="text" class="display-name" placeholder="Display Name">
+                <input type="text" class="bio" placeholder="Bio">
+                <button class="save-settings">Save Settings</button>
+            </div>
+        </div>
+        <div class="chat-window">
+            <div class="chat-messages">
+                <!-- Placeholder for chat messages -->
+                <div>User 1: Hello!</div>
+                <div>User 2: Hi there!</div>
+            </div>
+            <input type="text" class="message-input" placeholder="Type your message...">
+        </div>
+    </div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.3.1/socket.io.js"></script>
+    <script src="client.js"></script>
+</body>
+</html>
