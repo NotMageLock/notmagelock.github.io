@@ -9,6 +9,7 @@
 [Flappy Bird](https://notmagelock.github.io/Games/FlappyBird/) <br>
 [Hole-io](https://notmagelock.github.io/Games/HoleIO/) <br>
 [Idle Dice](https://notmagelock.github.io/Games/IdleDice/) <br>
+[Krunker](https://notmagelock.github.io/Games/krunker/) <br>
 [Paper-io](https://notmagelock.github.io/Games/Paper-io/) <br>
 [Retro Bowl](https://notmagelock.github.io/Games/RetroBowl/) <br>
 [Sand Game](https://notmagelock.github.io/Games/SandGame/) <br>
