@@ -2,3 +2,18 @@ theme: jekyll-theme-minimal
 title: "MageLock's Site"
 description: "<a href='https://www.youtube.com/@MageLock'>My YouTube channel</a><br><a href='https://notmagelock.github.io/Games'>Games</a>"
 favicon: /assets/logo.png
+
+baseurl: ""
+url: "https://notmagelock.github.io"
+
+markdown: kramdown
+
+excerpt_separator: "<!--more-->"
+
+plugins:
+  - jekyll-feed
+  
+permalink: /:categories/:year/:month/:day/:title.html
+
+paginate: 5
+paginate_path: "/page:num/"
