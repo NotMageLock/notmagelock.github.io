@@ -1,27 +1,39 @@
-/* General Styles */
 body {
-    font-family: Arial, sans-serif;
+    font-family: 'Londrina Solid', sans-serif;
     margin: 0;
     padding: 0;
-    background-color: #f0f0f0;
 }
 
 header {
-    background-color: #333;
-    color: white;
-    padding: 1rem 0;
+    background-color: #f0f0f0; /* Change as needed */
+    padding: 20px;
+}
+
+.banner {
     text-align: center;
+}
+
+.banner img {
+    max-width: 100%;
+    height: auto;
+}
+
+.title {
+    font-family: 'Lilita One', cursive;
+    margin-top: 10px;
 }
 
 nav ul {
     list-style-type: none;
-    margin: 0;
     padding: 0;
+    margin: 0;
+    text-align: center;
+    background-color: #333; /* Change as needed */
 }
 
 nav ul li {
     display: inline;
-    margin-right: 1rem;
+    margin-right: 20px;
 }
 
 nav ul li a {
@@ -29,25 +41,45 @@ nav ul li a {
     text-decoration: none;
 }
 
-nav ul li a:hover {
-    text-decoration: underline;
-}
-
 main {
-    padding: 2rem;
-    background-color: white;
-}
-
-section {
-    margin-bottom: 2rem;
+    padding: 20px;
 }
 
 footer {
-    background-color: #333;
+    background-color: #333; /* Change as needed */
     color: white;
     text-align: center;
-    padding: 1rem 0;
+    padding: 10px;
     position: fixed;
-    width: 100%;
     bottom: 0;
+    width: 100%;
+}
+/* Add this at the end of the CSS file */
+
+.background-image {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    z-index: -1;
+}
+
+.home-section {
+    background-color: #f0f0f0; /* Change as needed */
+    color: black;
+    padding: 20px;
+}
+
+.links-section {
+    background-color: #f9f9f9; /* Change as needed */
+    color: black;
+    padding: 20px;
+}
+
+.events-section {
+    background-color: #e0e0e0; /* Change as needed */
+    color: black;
+    padding: 20px;
 }
