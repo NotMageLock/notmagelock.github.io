@@ -5,7 +5,7 @@ body {
 }
 
 header {
-    background-color: #f0f0f0; /* Change as needed */
+    background-color: #f0f0f0;
     padding: 20px;
 }
 
@@ -28,7 +28,7 @@ nav ul {
     padding: 0;
     margin: 0;
     text-align: center;
-    background-color: #333; /* Change as needed */
+    background-color: #333;
 }
 
 nav ul li {
@@ -46,7 +46,7 @@ main {
 }
 
 footer {
-    background-color: #333; /* Change as needed */
+    background-color: #333;
     color: white;
     text-align: center;
     padding: 10px;
@@ -54,7 +54,12 @@ footer {
     bottom: 0;
     width: 100%;
 }
-/* Add this at the end of the CSS file */
+
+.home-section,
+.links-section,
+.events-section {
+    margin-bottom: 50px;
+}
 
 .background-image {
     position: fixed;
@@ -66,20 +71,34 @@ footer {
     z-index: -1;
 }
 
-.home-section {
-    background-color: #f0f0f0; /* Change as needed */
-    color: black;
-    padding: 20px;
-}
-
-.links-section {
-    background-color: #f9f9f9; /* Change as needed */
-    color: black;
-    padding: 20px;
-}
-
+.home-section,
+.links-section,
 .events-section {
-    background-color: #e0e0e0; /* Change as needed */
-    color: black;
     padding: 20px;
+    background-color: #f0f0f0;
+    border-radius: 10px;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+}
+
+h2 {
+    margin-top: 0;
+}
+
+ul {
+    list-style: none;
+    padding: 0;
+}
+
+li {
+    margin-bottom: 10px;
+}
+
+footer {
+    background-color: #333;
+    color: white;
+    text-align: center;
+    padding: 10px;
+    position: fixed;
+    bottom: 0;
+    width: 100%;
 }
