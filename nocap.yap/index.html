@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nocap.yap</title>
+    <style>
+                body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f7f7f7;
+        }
+        .container {
+            max-width: 800px;
+            margin: 20px auto;
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        h1 {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        #messages {
+            border: 1px solid #ccc;
+            padding: 10px;
+            overflow-y: scroll;
+            max-height: 300px;
+        }
+        #message-form {
+            margin-top: 20px;
+        }
+        #message {
+            width: calc(100% - 120px);
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            margin-right: 10px;
+            font-size: 16px;
+        }
+        #send-btn {
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Nocap.yap</h1>
+        <div id="messages"></div>
+        <form id="message-form">
+            <input type="text" id="username" placeholder="Enter your username">
+            <input type="text" id="message" placeholder="Type your message here...">
+            <button type="submit" id="send-btn">Send</button>
+        </form>
+    </div>
+
+    <script src="/socket.io/socket.io.js"></script>
+    <script>
+        const socket = io();
+
+        const messages = document.getElementById('messages');
+        const form = document.getElementById('message-form');
+        const inputUsername = document.getElementById('username');
+        const inputMessage = document.getElementById('message');
+
+        form.addEventListener('submit', (e) => {
+            e.preventDefault();
+            if (inputMessage.value) {
+                const messageData = {
+                    username: inputUsername.value,
+                    message: inputMessage.value
+                };
+                socket.emit('chat message', messageData);
+                inputMessage.value = '';
+            }
+        });
+
+        socket.on('chat message', (data) => {
+            const item = document.createElement('div');
+            item.innerHTML = `<strong>${data.username}:</strong> ${data.message}`;
+            messages.appendChild(item);
+            messages.scrollTop = messages.scrollHeight;
+        });
+
+        socket.emit('set username', prompt('Enter your username:'));
+    </script>
+</body>
+</html>
