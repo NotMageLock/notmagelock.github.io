@@ -11,32 +11,40 @@ header {
     position: relative;
 }
 
-header img#banner {
+.banner-container {
+    width: 100%;
+    overflow: hidden;
+}
+
+.banner-container img {
     width: 100%;
     height: auto;
+}
+
+.header-content {
+    position: absolute;
+    top: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    text-align: center;
+    width: 100%;
 }
 
 header h1 {
     font-family: 'Lilita One', sans-serif;
     margin: 0;
-    position: absolute;
-    top: 20px;
-    left: 50%;
-    transform: translateX(-50%);
-    color: #fff;
+    font-size: 3em;
+    color: white;
     text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7);
 }
 
 nav ul {
     list-style: none;
     padding: 0;
-    margin: 10px 0;
-    position: absolute;
-    bottom: 10px;
-    left: 50%;
-    transform: translateX(-50%);
+    margin: 20px 0 0;
     background-color: rgba(0, 0, 0, 0.5);
     border-radius: 5px;
+    display: inline-block;
 }
 
 nav ul li {
@@ -51,7 +59,7 @@ nav ul li a {
     display: inline-block;
 }
 
-section {
+main {
     padding: 20px;
 }
 
