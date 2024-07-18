@@ -1,71 +1,23 @@
-#mods-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-    gap: 20px;
-    padding: 20px;
-    justify-items: center;
-}
-
-.mod-item {
-    background-color: #fff;
-    border-radius: 20px;
-    overflow: hidden;
-    text-align: center;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-    transition: transform 0.3s;
-    width: 90%;
-}
-
-    .mod-item:hover {
-        transform: scale(1.05);
-    }
-
-    .mod-item img {
-        width: 100%;
-        transition: all 0.3s;
-    }
-
-    .mod-item:hover img {
-        transform: scale(1.1);
-    }
-
-    .mod-item img.mod-preview {
-        border-radius: 20px 20px 0 0;
-    }
-
-    .mod-item h2 {
-        padding: 10px;
-        margin: 0;
-        background-color: #333;
-        color: #fff;
-        border-radius: 0 0 20px 20px;
-    }
-
-    .mod-item a {
-        text-decoration: none;
-        color: inherit;
-        display: block;
-    }
-
-        .mod-item a:hover img {
-            content: url("assets/mod1.gif"); /* Update with the correct gif path */
-        }
-
-        .mod-item a:hover .mod-preview {
-            content: url("assets/mod1.gif"); /* Update with the correct gif path */
-        }
-
+/* General Body and Font Styles */
 body {
     font-family: 'Londrina Solid', sans-serif;
     margin: 0;
     padding: 0;
     background-color: #f4f4f4;
     color: #333;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
 }
 
+/* Header Styles */
 header {
     text-align: center;
     position: relative;
+    width: 100%;
+    background-color: #333; /* Dark background for the header */
 }
 
 .banner-container {
@@ -73,14 +25,14 @@ header {
     overflow: hidden;
 }
 
-    .banner-container img {
-        width: 100%;
-        height: auto;
-    }
+.banner-container img {
+    width: 100%;
+    height: auto;
+}
 
 .header-content {
     position: absolute;
-    top: 20px;
+    top: 15px; /* Scaled up from 10px */
     left: 50%;
     transform: translateX(-50%);
     text-align: center;
@@ -90,34 +42,39 @@ header {
 header h1 {
     font-family: 'Lilita One', sans-serif;
     margin: 0;
-    font-size: 3em;
+    font-size: 4.5em; /* Scaled up from 3em by 1.5 */
     color: white;
-    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7);
+    text-shadow: 1.5px 1.5px 3px rgba(0, 0, 0, 0.7); /* Scaled up from 2px 2px 4px by 1.5 */
 }
 
 nav ul {
     list-style: none;
     padding: 0;
-    margin: 20px 0 0;
+    margin: 30px 0 0; /* Scaled up from 20px by 1.5 */
     background-color: rgba(0, 0, 0, 0.5);
-    border-radius: 5px;
+    border-radius: 7.5px; /* Scaled up from 5px by 1.5 */
     display: inline-block;
 }
 
-    nav ul li {
-        display: inline;
-        margin: 0 10px;
-    }
+nav ul li {
+    display: inline;
+    margin: 0 15px; /* Scaled up from 10px by 1.5 */
+}
 
-        nav ul li a {
-            color: #fff;
-            text-decoration: none;
-            padding: 10px 15px;
-            display: inline-block;
-        }
+nav ul li a {
+    color: #fff;
+    text-decoration: none;
+    padding: 15px 22.5px; /* Scaled up from 10px 15px by 1.5 */
+    display: inline-block;
+}
 
+/* Main Content Styles */
 main {
-    padding: 20px;
+    padding: 30px; /* Scaled up from 20px by 1.5 */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
 }
 
 #crap, #contact, #events, #crew {
@@ -129,59 +86,133 @@ main {
     height: auto;
 }
 
-.btn {
+/* Mod Detail Section */
+#mod-detail {
+    display: flex;
+    align-items: center;
+    padding: 30px; /* Scaled up from 20px by 1.5 */
+    max-width: 1200px; /* Scaled up from 800px by 1.5 */
+    margin: 30px; /* Scaled up from 20px by 1.5 */
+}
+
+.mod-images img {
+    width: 100%;
+    max-width: 1200px; /* Scaled up from 600px by 2.0 */
+    height: auto;
+    display: block;
+    margin: 0 auto; /* Center the image */
+    border-radius: 20px; /* Scaled up from 10px by 2.0 */
+}
+
+.mod-info h1 {
+    font-size: 3em; /* Scaled up from 2em by 1.5 */
+    margin: 0;
+    color: #333; /* Darker text color for better readability */
+}
+
+.mod-info p {
+    font-size: 1.8em; /* Scaled up from 1.2em by 1.5 */
+    margin: 15px 0; /* Scaled up from 10px by 1.5 */
+    color: #666; /* Light gray text color */
+}
+
+.mod-info .btn {
+    margin-top: 15px; /* Scaled up from 10px by 1.5 */
     display: inline-block;
-    padding: 10px 20px;
+    padding: 15px 30px; /* Scaled up from 10px 20px by 1.5 */
     color: #fff;
     background-color: #333;
     text-decoration: none;
-    border-radius: 5px;
+    border-radius: 7.5px; /* Scaled up from 5px by 1.5 */
 }
 
+/* Button Styles */
+.btn {
+    display: inline-block;
+    padding: 15px 30px; /* Scaled up from 10px 20px by 1.5 */
+    color: #fff;
+    background-color: #333;
+    text-decoration: none;
+    border-radius: 7.5px; /* Scaled up from 5px by 1.5 */
+}
+
+.btn:hover {
+    background-color: #0056b3; /* Darker blue on hover */
+}
+
+/* Footer Styles */
 footer {
     background-color: #333;
     color: #fff;
     text-align: center;
-    padding: 10px 0;
+    padding: 15px 0; /* Scaled up from 10px by 1.5 */
     position: fixed;
     bottom: 0;
     width: 100%;
 }
 
+/* Back Button Styles */
 .back-button {
     position: fixed;
-    top: 10px;
-    left: 10px;
+    top: 15px; /* Scaled up from 10px by 1.5 */
+    left: 15px; /* Scaled up from 10px by 1.5 */
 }
 
-#mod-detail {
-    display: flex;
-    align-items: center;
-    padding: 20px;
+/* Grid Styles */
+#mods-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(400px, 1fr)); /* Scaled up from 350px by 1.5 */
+    gap: 30px; /* Scaled up from 20px by 1.5 */
+    padding: 30px; /* Scaled up from 20px by 1.5 */
+    justify-items: center;
 }
 
-.mod-images img {
-    width: 300px;
-    height: auto;
-    border-radius: 10px;
-    margin-right: 20px;
+/* Mod Item Styles */
+.mod-item {
+    background-color: #fff;
+    border-radius: 35px; /* Scaled up from 20px by 1.75 (1.5 x 1.2) */
+    overflow: hidden;
+    text-align: center;
+    box-shadow: 0 7px 14px rgba(0, 0, 0, 0.2); /* No scaling needed, keeps the same */
+    transition: transform 0.3s;
+    width: 90%;
 }
 
-.mod-info h1 {
-    font-size: 2em;
+.mod-item:hover {
+    transform: scale(1.05);
+}
+
+.mod-item img {
+    width: 100%;
+    transition: all 0.3s;
+}
+
+.mod-item:hover img {
+    transform: scale(1.1);
+}
+
+.mod-item img.mod-preview {
+    border-radius: 35px 35px 0 0; /* Scaled up from 20px 20px 0 0 by 1.75 */
+}
+
+.mod-item h2 {
+    padding: 15px; /* Scaled up from 10px by 1.5 */
     margin: 0;
-}
-
-.mod-info p {
-    font-size: 1.2em;
-}
-
-.mod-info .btn {
-    margin-top: 10px;
-    display: inline-block;
-    padding: 10px 20px;
-    color: #fff;
     background-color: #333;
+    color: #fff;
+    border-radius: 0 0 35px 35px; /* Scaled up from 20px 20px 0 0 by 1.75 */
+}
+
+.mod-item a {
     text-decoration: none;
-    border-radius: 5px;
+    color: inherit;
+    display: block;
+}
+
+.mod-item a:hover img {
+    content: url("assets/mod1.gif"); /* Update with the correct gif path */
+}
+
+.mod-item a:hover .mod-preview {
+    content: url("assets/mod1.gif"); /* Update with the correct gif path */
 }
