@@ -160,59 +160,46 @@ footer {
 
 /* Grid Styles */
 #mods-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(400px, 1fr)); /* Scaled up from 350px by 1.5 */
-    gap: 30px; /* Scaled up from 20px by 1.5 */
-    padding: 30px; /* Scaled up from 20px by 1.5 */
-    justify-items: center;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 30px; /* Adjust gap if needed */
+    padding: 20px;
 }
 
-/* Mod Item Styles */
 .mod-item {
-    background-color: #fff;
-    border-radius: 35px; /* Scaled up from 20px by 1.75 (1.5 x 1.2) */
-    overflow: hidden;
-    text-align: center;
-    box-shadow: 0 7px 14px rgba(0, 0, 0, 0.2); /* No scaling needed, keeps the same */
-    transition: transform 0.3s;
-    width: 90%;
+    position: relative;
+    width: 300px; /* Adjust size as needed */
+    height: 300px; /* Ensure width and height are the same for a perfect circle */
+    border-radius: 50%; /* Creates a squircle effect */
+    overflow: hidden; /* Ensure content is clipped to the squircle shape */
 }
 
-.mod-item:hover {
-    transform: scale(1.05);
-}
-
-.mod-item img {
+.mod-preview, .mod-preview-hover {
+    position: absolute;
+    top: 50%;
+    left: 50%;
     width: 100%;
-    transition: all 0.3s;
+    height: 100%;
+    object-fit: cover; /* Adjust this if the image should not be cropped */
+    transform: translate(-50%, -50%); /* Center the image */
+    transition: opacity 0.3s ease-in-out, transform 0.3s ease-in-out;
 }
 
-.mod-item:hover img {
-    transform: scale(1.1);
+.mod-preview {
+    z-index: 1;
 }
 
-.mod-item img.mod-preview {
-    border-radius: 35px 35px 0 0; /* Scaled up from 20px 20px 0 0 by 1.75 */
+.mod-preview-hover {
+    opacity: 0;
+    z-index: 2;
 }
 
-.mod-item h2 {
-    padding: 15px; /* Scaled up from 10px by 1.5 */
-    margin: 0;
-    background-color: #333;
-    color: #fff;
-    border-radius: 0 0 35px 35px; /* Scaled up from 20px 20px 0 0 by 1.75 */
+.mod-item:hover .mod-preview {
+    opacity: 0; /* Hide the static image on hover */
 }
 
-.mod-item a {
-    text-decoration: none;
-    color: inherit;
-    display: block;
-}
-
-.mod-item a:hover img {
-    content: url("assets/mod1.gif"); /* Update with the correct gif path */
-}
-
-.mod-item a:hover .mod-preview {
-    content: url("assets/mod1.gif"); /* Update with the correct gif path */
+.mod-item:hover .mod-preview-hover {
+    opacity: 1; /* Show the GIF on hover */
+    transform: translate(-50%, -50%) scale(1.1); /* Scale the GIF on hover */
 }
