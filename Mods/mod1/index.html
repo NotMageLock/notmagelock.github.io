@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GravGrongle</title>
+    <link href="https://fonts.googleapis.com/css2?family=Lilita+One&family=Londrina+Solid:wght@300;400;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+    <link rel="icon" href="/../../assets/favicon.ico" type="image/png">
+    <script>
+        function rotateImages() {
+            let images = ['assets/img1.png', 'assets/img2.png', 'assets/img3.png'];
+            let index = 0;
+            setInterval(() => {
+                document.getElementById('mod-image').src = images[index];
+                index = (index + 1) % images.length;
+            }, 2000);
+        }
+    </script>
+</head>
+<body onload="rotateImages()">
+    <header>
+        <div class="back-button">
+            <a href="mods.html" class="btn">Back</a>
+        </div>
+    </header>
+
+    <main>
+        <section id="mod-detail">
+            <div class="mod-images">
+                <img id="mod-image" src="assets/img1.png" alt="GravGrongle Image">
+            </div>
+            <div class="mod-info">
+                <h1>Mod 1</h1>
+                <p>This is the description of Mod 1. It adds cool features to the game and makes it more fun.</p>
+                <a href="https://github.com/NotMageLock/GravGrongle/Releases/tag/latest/GravGrongle.dll" class="btn">Download</a>
+                <a href="https://github.com/NotMageLock/GravGrongle" class="btn">Source Code</a>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <p>&copy; 2024 Lock</p>
+    </footer>
+</body>
+</html>

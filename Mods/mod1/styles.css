@@ -1,0 +1,187 @@
+#mods-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 20px;
+    padding: 20px;
+    justify-items: center;
+}
+
+.mod-item {
+    background-color: #fff;
+    border-radius: 20px;
+    overflow: hidden;
+    text-align: center;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    transition: transform 0.3s;
+    width: 90%;
+}
+
+    .mod-item:hover {
+        transform: scale(1.05);
+    }
+
+    .mod-item img {
+        width: 100%;
+        transition: all 0.3s;
+    }
+
+    .mod-item:hover img {
+        transform: scale(1.1);
+    }
+
+    .mod-item img.mod-preview {
+        border-radius: 20px 20px 0 0;
+    }
+
+    .mod-item h2 {
+        padding: 10px;
+        margin: 0;
+        background-color: #333;
+        color: #fff;
+        border-radius: 0 0 20px 20px;
+    }
+
+    .mod-item a {
+        text-decoration: none;
+        color: inherit;
+        display: block;
+    }
+
+        .mod-item a:hover img {
+            content: url("assets/mod1.gif"); /* Update with the correct gif path */
+        }
+
+        .mod-item a:hover .mod-preview {
+            content: url("assets/mod1.gif"); /* Update with the correct gif path */
+        }
+
+body {
+    font-family: 'Londrina Solid', sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f4f4f4;
+    color: #333;
+}
+
+header {
+    text-align: center;
+    position: relative;
+}
+
+.banner-container {
+    width: 100%;
+    overflow: hidden;
+}
+
+    .banner-container img {
+        width: 100%;
+        height: auto;
+    }
+
+.header-content {
+    position: absolute;
+    top: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    text-align: center;
+    width: 100%;
+}
+
+header h1 {
+    font-family: 'Lilita One', sans-serif;
+    margin: 0;
+    font-size: 3em;
+    color: white;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7);
+}
+
+nav ul {
+    list-style: none;
+    padding: 0;
+    margin: 20px 0 0;
+    background-color: rgba(0, 0, 0, 0.5);
+    border-radius: 5px;
+    display: inline-block;
+}
+
+    nav ul li {
+        display: inline;
+        margin: 0 10px;
+    }
+
+        nav ul li a {
+            color: #fff;
+            text-decoration: none;
+            padding: 10px 15px;
+            display: inline-block;
+        }
+
+main {
+    padding: 20px;
+}
+
+#crap, #contact, #events, #crew {
+    text-align: center;
+}
+
+.crap-content img, .crew-member img {
+    max-width: 100%;
+    height: auto;
+}
+
+.btn {
+    display: inline-block;
+    padding: 10px 20px;
+    color: #fff;
+    background-color: #333;
+    text-decoration: none;
+    border-radius: 5px;
+}
+
+footer {
+    background-color: #333;
+    color: #fff;
+    text-align: center;
+    padding: 10px 0;
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+}
+
+.back-button {
+    position: fixed;
+    top: 10px;
+    left: 10px;
+}
+
+#mod-detail {
+    display: flex;
+    align-items: center;
+    padding: 20px;
+}
+
+.mod-images img {
+    width: 300px;
+    height: auto;
+    border-radius: 10px;
+    margin-right: 20px;
+}
+
+.mod-info h1 {
+    font-size: 2em;
+    margin: 0;
+}
+
+.mod-info p {
+    font-size: 1.2em;
+}
+
+.mod-info .btn {
+    margin-top: 10px;
+    display: inline-block;
+    padding: 10px 20px;
+    color: #fff;
+    background-color: #333;
+    text-decoration: none;
+    border-radius: 5px;
+}
