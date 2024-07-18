@@ -26,7 +26,7 @@ header {
 }
 
 .banner-container img {
-    width: 100%;
+    width: 300%;
     height: auto;
 }
 
@@ -77,31 +77,30 @@ main {
     text-align: center;
 }
 
-#crap, #contact, #events, #crew {
-    text-align: center;
-}
-
-.crap-content img, .crew-member img {
-    max-width: 100%;
-    height: auto;
-}
-
 /* Mod Detail Section */
 #mod-detail {
     display: flex;
-    align-items: center;
+    flex-direction: row; /* Changed to row for side-by-side layout */
+    align-items: flex-start;
     padding: 30px; /* Scaled up from 20px by 1.5 */
     max-width: 1200px; /* Scaled up from 800px by 1.5 */
     margin: 30px; /* Scaled up from 20px by 1.5 */
+    gap: 20px; /* Space between the image and text */
+}
+
+.mod-images {
+    flex: 1;
 }
 
 .mod-images img {
     width: 100%;
-    max-width: 1200px; /* Scaled up from 600px by 2.0 */
+    max-width: 600px; /* Limiting maximum width */
     height: auto;
-    display: block;
-    margin: 0 auto; /* Center the image */
     border-radius: 20px; /* Scaled up from 10px by 2.0 */
+}
+
+.mod-info {
+    flex: 2;
 }
 
 .mod-info h1 {
