@@ -95,24 +95,26 @@ footer {
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
-    gap: 30px; /* Increase the gap if needed */
+    gap: 30px; /* Adjust gap if needed */
     padding: 20px;
 }
 
 .mod-item {
     position: relative;
-    width: 400px; /* Adjust the width for bigger size */
-    height: 300px; /* Adjust the height if needed */
-    overflow: hidden;
+    width: 300px; /* Adjust size as needed */
+    height: 300px; /* Ensure width and height are the same for a perfect circle */
+    border-radius: 50%; /* Creates a squircle effect */
+    overflow: hidden; /* Ensure content is clipped to the squircle shape */
 }
 
 .mod-preview, .mod-preview-hover {
     position: absolute;
-    top: 0;
-    left: 0;
+    top: 50%;
+    left: 50%;
     width: 100%;
     height: 100%;
-    object-fit: cover; /* Ensures image covers the container */
+    object-fit: cover; /* Adjust this if the image should not be cropped */
+    transform: translate(-50%, -50%); /* Center the image */
     transition: opacity 0.3s ease-in-out, transform 0.3s ease-in-out;
 }
 
@@ -131,5 +133,5 @@ footer {
 
 .mod-item:hover .mod-preview-hover {
     opacity: 1; /* Show the GIF on hover */
-    transform: scale(1.1); /* Scales the GIF on hover */
+    transform: translate(-50%, -50%) scale(1.1); /* Scale the GIF on hover */
 }
