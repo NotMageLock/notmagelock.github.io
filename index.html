@@ -9,20 +9,16 @@
     <link rel="icon" href="assets/favicon.ico" type="image/png">
     <style>
         body {
-            font-family: 'Lilita One', 'Londrina Solid', sans-serif;
+            font-family: 'Lilita One', sans-serif;
             margin: 0;
             padding: 0;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
         }
         header {
-            width: 100%;
             background-color: #f8f8f8;
-            padding: 20px 0;
+            padding: 20px;
+            text-align: center;
         }
         .banner-container {
-            width: 100%;
             display: flex;
             justify-content: center;
         }
@@ -53,13 +49,53 @@
         footer {
             padding: 10px;
             background-color: #f8f8f8;
-            width: 100%;
             text-align: center;
         }
+        .menu-button {
+            display: none;
+            background-color: #000;
+            color: #fff;
+            border: none;
+            padding: 10px;
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            cursor: pointer;
+        }
+        .sidebar {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            height: 100%;
+            width: 250px;
+            background-color: #333;
+            color: #fff;
+            padding-top: 60px;
+            z-index: 1000;
+        }
+        .sidebar a {
+            padding: 10px 15px;
+            text-decoration: none;
+            color: #fff;
+            display: block;
+        }
+        .sidebar a:hover {
+            background-color: #575757;
+        }
+        .close-btn {
+            position: absolute;
+            top: 10px;
+            right: 20px;
+            font-size: 20px;
+            cursor: pointer;
+        }
         @media (max-width: 768px) {
-            nav ul li {
+            nav ul {
+                display: none;
+            }
+            .menu-button {
                 display: block;
-                margin: 10px 0;
             }
         }
     </style>
@@ -80,13 +116,23 @@
                     <li><a href="https://discord.com/invite/SzK7s4dzWB">Discord</a></li>
                 </ul>
             </nav>
+            <button class="menu-button" onclick="toggleSidebar()">☰ Menu</button>
         </div>
     </header>
+
+    <div class="sidebar" id="sidebar">
+        <span class="close-btn" onclick="toggleSidebar()">×</span>
+        <a href="https://notmagelock.github.io/">Home</a>
+        <a href="https://github.com/NotMageLock/">Github</a>
+        <a href="Links">Links</a>
+        <a href="Mods">Mods</a>
+        <a href="https://discord.com/invite/SzK7s4dzWB">Discord</a>
+    </div>
 
     <main>
         <section id="desc">
             <h1>Hey there!</h1>
-            <p>I'm Lock, an intermediate C# developer with an interest in modding vr games such as Gorilla tag using the BepInEx framework. My other hobbies and interests include 3D art, game jams, Bloons TD, content creation, and more!</p>
+            <p>I'm Lock, an intermediate C# developer with an interest in modding VR games such as Gorilla Tag using the BepInEx framework. My other hobbies and interests include 3D art, game jams, Bloons TD, content creation, and more!</p>
         </section>
     </main>
 
@@ -95,6 +141,15 @@
     </footer>
 
     <script>
+        function toggleSidebar() {
+            const sidebar = document.getElementById('sidebar');
+            if (sidebar.style.display === 'block') {
+                sidebar.style.display = 'none';
+            } else {
+                sidebar.style.display = 'block';
+            }
+        }
+
         const konamiCode = [38, 38, 40, 40, 37, 39, 37, 39, 66, 65, 13];
         let konamiIndex = 0;
 
