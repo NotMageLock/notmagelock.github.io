@@ -85,7 +85,7 @@
     </div>
 
     <script>
-        const votingStartDate = new Date('2024-08-04');
+        const votingStartDate = new Date('2024-08-04'); // Start date for voting cycle
 
         document.getElementById('voteForm').addEventListener('submit', function(event) {
             event.preventDefault();
@@ -93,62 +93,59 @@
             const currentDate = new Date();
             const votedDate = new Date(localStorage.getItem('votedDate'));
 
+            const selectedOption = document.getElementById('options').value;
+
             if (votedDate >= votingStartDate && votedDate < currentDate) {
-                const selectedOption = document.getElementById('options').value;
-                const webhookUrl = 'https://discord.com/api/webhooks/1269823482506641509/uXVF9nnIaDKmBa_dZgjriBJdl7iAbS13UCXvDGPxShU8xOLPI3OVTy9rGvNta5l8aWOC';
-
-                const data = {
-                    content: selectedOption
-                };
-
-                fetch(webhookUrl, {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify(data)
-                })
-                .then(response => response.json())
-                .then(result => {
-                    localStorage.setItem('votedDate', currentDate);
-                    localStorage.setItem('votedOption', selectedOption);
-                    document.getElementById('message').innerText = 'Vote submitted successfully!';
-                    console.log('Success:', result);
-                })
-                .catch(error => {
-                    document.getElementById('message').innerText = 'Error submitting vote.';
-                    console.error('Error:', error);
-                });
+                localStorage.setItem('votedDate', currentDate);
+                localStorage.setItem('votedOption', selectedOption);
+                document.getElementById('message').innerText = 'Vote updated successfully!';
             } else if (votedDate < votingStartDate || !localStorage.getItem('votedDate')) {
-                const selectedOption = document.getElementById('options').value;
-                const webhookUrl = 'https://discord.com/api/webhooks/1269823482506641509/uXVF9nnIaDKmBa_dZgjriBJdl7iAbS13UCXvDGPxShU8xOLPI3OVTy9rGvNta5l8aWOC';
-
-                const data = {
-                    content: selectedOption
-                };
-
-                fetch(webhookUrl, {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify(data)
-                })
-                .then(response => response.json())
-                .then(result => {
-                    localStorage.setItem('votedDate', currentDate);
-                    localStorage.setItem('votedOption', selectedOption);
-                    document.getElementById('message').innerText = 'Vote submitted successfully!';
-                    console.log('Success:', result);
-                })
-                .catch(error => {
-                    document.getElementById('message').innerText = 'Error submitting vote.';
-                    console.error('Error:', error);
-                });
+                localStorage.setItem('votedDate', currentDate);
+                localStorage.setItem('votedOption', selectedOption);
+                document.getElementById('message').innerText = 'Vote submitted successfully!';
             } else {
                 document.getElementById('message').innerText = 'You have already voted for this cycle.';
             }
+
+            // Save vote locally
+            let votes = JSON.parse(localStorage.getItem('votes')) || {};
+            votes[selectedOption] = (votes[selectedOption] || 0) + 1;
+            localStorage.setItem('votes', JSON.stringify(votes));
         });
+
+        function sendWinnerToWebhook() {
+            let votes = JSON.parse(localStorage.getItem('votes'));
+            if (votes) {
+                let winner = Object.keys(votes).reduce((a, b) => votes[a] > votes[b] ? a : b);
+
+                const webhookUrl = 'https://discord.com/api/webhooks/1269823482506641509/uXVF9nnIaDKmBa_dZgjriBJdl7iAbS13UCXvDGPxShU8xOLPI3OVTy9rGvNta5l8aWOC';
+
+                const data = {
+                    content: `The winner is: ${winner}`
+                };
+
+                fetch(webhookUrl, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(data)
+                })
+                .then(response => response.json())
+                .then(result => {
+                    console.log('Winner sent:', result);
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                });
+
+                // Clear votes after sending the winner
+                localStorage.removeItem('votes');
+            }
+        }
+
+        // Uncomment the line below to send the winner to the webhook manually
+        // sendWinnerToWebhook();
     </script>
 </body>
 </html>
