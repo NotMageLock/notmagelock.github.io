@@ -1,0 +1,36 @@
+---
+layout: default
+title: Send Message
+---
+
+<h1>Send a Message via Webhook</h1>
+<form id="message-form">
+    <textarea id="message" placeholder="Type your message" required></textarea>
+    <button type="submit">Send</button>
+</form>
+
+<script>
+    document.getElementById("message-form").addEventListener("submit", function(event) {
+        event.preventDefault();
+
+        const message = document.getElementById("message").value;
+        const webhookUrl = "https://discord.com/api/webhooks/1270225292127899763/GdtOZNVVUuq34-IorceH7_-CJWu-qM2Vu_u3-xVbpwgHknKjauCH_ynIafLWqtvfwN2-";
+
+        fetch(webhookUrl, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({ content: message }),
+        })
+        .then(response => {
+            if (response.ok) {
+                alert("Message sent!");
+                document.getElementById("message").value = ''; // Clear the textarea
+            } else {
+                alert("Failed to send message.");
+            }
+        })
+        .catch(console.error);
+    });
+</script>
