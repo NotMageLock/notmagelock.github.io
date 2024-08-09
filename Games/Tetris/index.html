@@ -3,7 +3,6 @@
 <head>
   <title>Tetris | MageLock's Site</title>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
   <style>
     html, body {
       height: 100%;
@@ -15,57 +14,64 @@
       display: flex;
       align-items: center;
       justify-content: center;
-      flex-direction: column;
+      touch-action: manipulation;
     }
 
     canvas {
       border: 1px solid white;
     }
 
+    /* Mobile controls */
     .controls {
+      position: absolute;
+      bottom: 20px;
       display: flex;
       justify-content: center;
-      margin-top: 10px;
+      width: 100%;
+      gap: 10px;
     }
 
     .controls button {
-      background-color: white;
+      background: white;
       border: none;
-      padding: 20px;
-      margin: 5px;
-      font-size: 24px;
-      border-radius: 10px;
+      padding: 10px 20px;
+      font-size: 20px;
       cursor: pointer;
-    }
-
-    .controls button:active {
-      background-color: gray;
     }
   </style>
 </head>
 <body>
 <canvas width="320" height="640" id="game"></canvas>
 
+<!-- Mobile controls -->
 <div class="controls">
-  <button id="left">&larr;</button>
-  <button id="up">&uarr;</button>
-  <button id="down">&darr;</button>
-  <button id="right">&rarr;</button>
+  <button id="left">←</button>
+  <button id="rotate">↑</button>
+  <button id="right">→</button>
+  <button id="down">↓</button>
 </div>
 
 <script>
+// Disable double-tap zoom
+let lastTouchEnd = 0;
+document.addEventListener('touchend', function(event) {
+  const now = (new Date()).getTime();
+  if (now - lastTouchEnd <= 300) {
+    event.preventDefault();
+  }
+  lastTouchEnd = now;
+}, false);
+
+// Tetris Game Logic
+
 // https://tetris.fandom.com/wiki/Tetris_Guideline
 
-// get a random integer between the range of [min,max]
-// @see https://stackoverflow.com/a/1527820/2124254
 function getRandomInt(min, max) {
   min = Math.ceil(min);
   max = Math.floor(max);
   return Math.floor(Math.random() * (max - min + 1)) + min;
 }
 
-// generate a new tetromino sequence
-// @see https://tetris.fandom.com/wiki/Random_Generator
 function generateSequence() {
   const sequence = ['I', 'J', 'L', 'O', 'S', 'T', 'Z'];
   while (sequence.length) {
@@ -75,7 +81,6 @@ function generateSequence() {
   }
 }
 
-// get the next tetromino in the sequence
 function getNextTetromino() {
   if (tetrominoSequence.length === 0) {
     generateSequence();
@@ -84,7 +89,6 @@ function getNextTetromino() {
   const matrix = tetrominos[name];
   const col = playfield[0].length / 2 - Math.ceil(matrix[0].length / 2);
   const row = name === 'I' ? -1 : -2;
-
   return {
     name: name,
     matrix: matrix,
@@ -93,8 +97,6 @@ function getNextTetromino() {
   };
 }
 
-// rotate an NxN matrix 90deg
-// @see https://codereview.stackexchange.com/a/186834
 function rotate(matrix) {
   const N = matrix.length - 1;
   const result = matrix.map((row, i) =>
@@ -103,7 +105,6 @@ function rotate(matrix) {
   return result;
 }
 
-// check to see if the new matrix/row/col is valid
 function isValidMove(matrix, cellRow, cellCol) {
   for (let row = 0; row < matrix.length; row++) {
     for (let col = 0; col < matrix[row].length; col++) {
@@ -120,7 +121,6 @@ function isValidMove(matrix, cellRow, cellCol) {
   return true;
 }
 
-// place the tetromino on the playfield
 function placeTetromino() {
   for (let row = 0; row < tetromino.matrix.length; row++) {
     for (let col = 0; col < tetromino.matrix[row].length; col++) {
@@ -132,7 +132,6 @@ function placeTetromino() {
       }
     }
   }
-
   for (let row = playfield.length - 1; row >= 0; ) {
     if (playfield[row].every(cell => !!cell)) {
       for (let r = row; r >= 0; r--) {
@@ -144,19 +143,15 @@ function placeTetromino() {
       row--;
     }
   }
-
   tetromino = getNextTetromino();
 }
 
-// show the game over screen
 function showGameOver() {
   cancelAnimationFrame(rAF);
   gameOver = true;
-
   context.fillStyle = 'black';
   context.globalAlpha = 0.75;
   context.fillRect(0, canvas.height / 2 - 30, canvas.width, 60);
-
   context.globalAlpha = 1;
   context.fillStyle = 'white';
   context.font = '36px monospace';
@@ -234,7 +229,6 @@ let gameOver = false;
 function loop() {
   rAF = requestAnimationFrame(loop);
   context.clearRect(0,0,canvas.width,canvas.height);
-
   for (let row = 0; row < 20; row++) {
     for (let col = 0; col < 10; col++) {
       if (playfield[row][col]) {
@@ -244,20 +238,16 @@ function loop() {
       }
     }
   }
-
   if (tetromino) {
     if (++count > 35) {
       tetromino.row++;
       count = 0;
-
       if (!isValidMove(tetromino.matrix, tetromino.row, tetromino.col)) {
         tetromino.row--;
         placeTetromino();
       }
     }
-
     context.fillStyle = colors[tetromino.name];
-
     for (let row = 0; row < tetromino.matrix.length; row++) {
       for (let col = 0; col < tetromino.matrix[row].length; col++) {
         if (tetromino.matrix[row][col]) {
@@ -270,24 +260,18 @@ function loop() {
 
 document.addEventListener('keydown', function(e) {
   if (gameOver) return;
-
   if (e.which === 37 || e.which === 39) {
-    const col = e.which === 37
-      ? tetromino.col - 1
-      : tetromino.col + 1;
-
+    const col = e.which === 37 ? tetromino.col - 1 : tetromino.col + 1;
     if (isValidMove(tetromino.matrix, tetromino.row, col)) {
       tetromino.col = col;
     }
   }
-
   if (e.which === 38) {
     const matrix = rotate(tetromino.matrix);
     if (isValidMove(matrix, tetromino.row, tetromino.col)) {
       tetromino.matrix = matrix;
     }
   }
-
   if(e.which === 40) {
     const row = tetromino.row + 1;
     if (!isValidMove(tetromino.matrix, row, tetromino.col)) {
@@ -299,32 +283,28 @@ document.addEventListener('keydown', function(e) {
   }
 });
 
-document.getElementById('left').addEventListener('click', function() {
-  if (gameOver) return;
+document.getElementById('left').addEventListener('touchstart', function() {
   const col = tetromino.col - 1;
   if (isValidMove(tetromino.matrix, tetromino.row, col)) {
     tetromino.col = col;
   }
 });
 
-document.getElementById('right').addEventListener('click', function() {
-  if (gameOver) return;
+document.getElementById('right').addEventListener('touchstart', function() {
   const col = tetromino.col + 1;
   if (isValidMove(tetromino.matrix, tetromino.row, col)) {
     tetromino.col = col;
   }
 });
 
-document.getElementById('up').addEventListener('click', function() {
-  if (gameOver) return;
+document.getElementById('rotate').addEventListener('touchstart', function() {
   const matrix = rotate(tetromino.matrix);
   if (isValidMove(matrix, tetromino.row, tetromino.col)) {
     tetromino.matrix = matrix;
   }
 });
 
-document.getElementById('down').addEventListener('click', function() {
-  if (gameOver) return;
+document.getElementById('down').addEventListener('touchstart', function() {
   const row = tetromino.row + 1;
   if (!isValidMove(tetromino.matrix, row, tetromino.col)) {
     tetromino.row = row - 1;
