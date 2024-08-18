@@ -21,6 +21,7 @@ title: Send Message
     const loginBtn = document.getElementById('login-btn');
     const loginSection = document.getElementById('login-section');
     const messageSection = document.getElementById('message-section');
+    let currentUser = '';
 
     loginBtn.addEventListener('click', () => {
         window.location.href = `https://discord.com/oauth2/authorize?client_id=${clientId}&redirect_uri=${redirectUri}&response_type=token&scope=identify`;
@@ -37,10 +38,8 @@ title: Send Message
             })
             .then(response => response.json())
             .then(user => {
-                if (user.username === 'magelock') {
-                    loginSection.style.display = 'none';
-                    messageSection.style.display = 'block';
-                } else if (user.username === 'rylanfox') {
+                if (user.username === 'magelock' || user.username === 'rylanfox') {
+                    currentUser = user.username;
                     loginSection.style.display = 'none';
                     messageSection.style.display = 'block';
                 } else {
@@ -56,13 +55,23 @@ title: Send Message
 
         const message = document.getElementById("message").value;
         const webhookUrl = "https://discord.com/api/webhooks/1270225292127899763/GdtOZNVVUuq34-IorceH7_-CJWu-qM2Vu_u3-xVbpwgHknKjauCH_ynIafLWqtvfwN2-";
+        let webhookName = '';
+
+        if (currentUser === 'magelock') {
+            webhookName = 'Lock';
+        } else if (currentUser === 'rylanfox') {
+            webhookName = 'Rylan';
+        }
 
         fetch(webhookUrl, {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
             },
-            body: JSON.stringify({ content: message }),
+            body: JSON.stringify({
+                content: message,
+                username: webhookName
+            }),
         })
         .then(response => {
             if (response.ok) {
