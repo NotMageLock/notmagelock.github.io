@@ -4,12 +4,50 @@ title: Send Message
 ---
 
 <h1>Send a Message via Webhook</h1>
-<form id="message-form">
-    <textarea id="message" placeholder="Type your message" required></textarea>
-    <button type="submit">Send</button>
-</form>
+<div id="login-section">
+    <button id="login-btn">Login with Discord</button>
+</div>
+
+<div id="message-section" style="display:none;">
+    <form id="message-form">
+        <textarea id="message" placeholder="Type your message" required></textarea>
+        <button type="submit">Send</button>
+    </form>
+</div>
 
 <script>
+    const clientId = '1274850814464233553';
+    const redirectUri = encodeURIComponent(window.location.href);
+    const loginBtn = document.getElementById('login-btn');
+    const loginSection = document.getElementById('login-section');
+    const messageSection = document.getElementById('message-section');
+
+    loginBtn.addEventListener('click', () => {
+        window.location.href = `https://discord.com/oauth2/authorize?client_id=${clientId}&redirect_uri=${redirectUri}&response_type=token&scope=identify`;
+    });
+
+    window.onload = function() {
+        const hash = window.location.hash;
+        if (hash) {
+            const token = new URLSearchParams(hash.substring(1)).get('access_token');
+            fetch('https://discord.com/api/users/@me', {
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                },
+            })
+            .then(response => response.json())
+            .then(user => {
+                if (user.username === 'magelock') {
+                    loginSection.style.display = 'none';
+                    messageSection.style.display = 'block';
+                } else {
+                    alert('Access denied. Only MageLock can send messages.');
+                }
+            })
+            .catch(console.error);
+        }
+    };
+
     document.getElementById("message-form").addEventListener("submit", function(event) {
         event.preventDefault();
 
