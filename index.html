@@ -160,22 +160,18 @@
     
     <script>
         function toggleSidebar() {
-            const sidebar = document.getElementById('mySidebar');
-            const openbtn = document.querySelector('.openbtn');
-            sidebar.classList.toggle('open');
-            
-            if (sidebar.classList.contains('open')) {
-                openbtn.style.position = 'absolute';
-                openbtn.style.left = 'calc(100% - 1715px)';
-                openbtn.style.top = '10px';
-                document.querySelector('main').style.marginLeft = '250px';
-            } else {
-                openbtn.style.position = 'fixed';
-                openbtn.style.left = '10px';
-                openbtn.style.top = '10px';
-                document.querySelector('main').style.marginLeft = '0';
-            }
+        const sidebar = document.getElementById('mySidebar');
+        const openbtn = document.querySelector('.openbtn');
+        const sidebarWidth = 250; // Width of the sidebar
+
+        sidebar.classList.toggle('open');
+        
+        if (sidebar.classList.contains('open')) {
+            openbtn.style.left = `${sidebarWidth + 10}px`; // Move button to the right by sidebar width
+        } else {
+            openbtn.style.left = '10px'; // Reset button to original position
         }
+    }
     </script>
 </body>
 </html>
