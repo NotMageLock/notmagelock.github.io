@@ -145,6 +145,7 @@
     <button class="openbtn" onclick="toggleSidebar()">☰</button>
     
     <aside class="sidebar" id="mySidebar">
+        <a href="">Home</a>
         <a href="/Comms/">Comms</a>
         <a href="/Links/">Links</a>
         <a href="/Mods/">Mods</a>
@@ -155,30 +156,31 @@
         <section id="home">
             <h1>Hey! I'm Lock.</h1>
             <p>I'm Lock, an intermediate C# developer with an interest in modding VR games such as Gorilla Tag using the BepInEx framework. My other hobbies and interests include 3D art, game jams, Bloons TD, content creation, and more!</p>
+            <p>I do commission work as well. </p>
         </section>
     </main>
-<script>
-    function toggleSidebar() {
-        const sidebar = document.getElementById('mySidebar');
-        const openbtn = document.querySelector('.openbtn');
-        const sidebarWidth = 250; // Width of the sidebar
+    <script>
+        function toggleSidebar() {
+            const sidebar = document.getElementById('mySidebar');
+            const openbtn = document.querySelector('.openbtn');
+            const sidebarWidth = 250; // Width of the sidebar
 
-        sidebar.classList.toggle('open');
+            sidebar.classList.toggle('open');
 
-        if (window.innerWidth <= 768) { // For mobile devices
-            if (sidebar.classList.contains('open')) {
-                openbtn.style.left = `calc(100% - ${sidebarWidth + -200}px)`; // Move button to the right side of the screen
-            } else {
-                openbtn.style.left = '10px'; // Reset button to original position
-            }
-        } else { // For larger screens
-            if (sidebar.classList.contains('open')) {
-                openbtn.style.left = `${sidebarWidth + 10}px`; // Move button to the right by sidebar width
-            } else {
-                openbtn.style.left = '10px'; // Reset button to original position
+            if (window.innerWidth <= 768) { // For mobile devices
+                if (sidebar.classList.contains('open')) {
+                    openbtn.style.left = `calc(100% - ${sidebarWidth + -200}px)`; // Move button to the right side of the screen
+                } else {
+                    openbtn.style.left = '10px'; // Reset button to original position
+                }
+            } else { // For larger screens
+                if (sidebar.classList.contains('open')) {
+                    openbtn.style.left = `${sidebarWidth + -50}px`; // Move button to the right by sidebar width
+                } else {
+                    openbtn.style.left = '10px'; // Reset button to original position
+                }
             }
         }
-    }
-</script>
+    </script>
 </body>
 </html>
