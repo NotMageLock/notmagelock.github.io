@@ -72,7 +72,7 @@
         .sidebar.open ~ .openbtn {
             position: absolute;
             top: 10px;
-            right: calc(100% - 1715px);
+            left: calc(100% - 1715px);
         }
 
         main {
@@ -166,7 +166,7 @@
             
             if (sidebar.classList.contains('open')) {
                 openbtn.style.position = 'absolute';
-                openbtn.style.right = 'calc(100% - 205px)';
+                openbtn.style.left = 'calc(100% - 205px)';
                 openbtn.style.top = '10px';
                 document.querySelector('main').style.marginLeft = '250px';
             } else {
