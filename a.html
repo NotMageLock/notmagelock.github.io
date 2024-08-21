@@ -4,29 +4,79 @@ title: Send Message
 ---
 
 <h1>Send a Message via Webhook</h1>
-<form id="message-form">
-    <textarea id="message" placeholder="Type your message" required></textarea>
-    <button type="submit">Send</button>
-</form>
+<div id="login-section">
+    <button id="login-btn">Login with Discord</button>
+</div>
+
+<div id="message-section" style="display:none;">
+    <form id="message-form">
+        <textarea id="message" placeholder="Type your message" required></textarea>
+        <button type="submit">Send</button>
+    </form>
+</div>
 
 <script>
+    const clientId = '1274850814464233553';
+    const redirectUri = encodeURIComponent(window.location.href);
+    const loginBtn = document.getElementById('login-btn');
+    const loginSection = document.getElementById('login-section');
+    const messageSection = document.getElementById('message-section');
+    let currentUser = '';
+
+    loginBtn.addEventListener('click', () => {
+        window.location.href = `https://discord.com/oauth2/authorize?client_id=${clientId}&redirect_uri=${redirectUri}&response_type=token&scope=identify`;
+    });
+
+    window.onload = function() {
+        const hash = window.location.hash;
+        if (hash) {
+            const token = new URLSearchParams(hash.substring(1)).get('access_token');
+            fetch('https://discord.com/api/users/@me', {
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                },
+            })
+            .then(response => response.json())
+            .then(user => {
+                if (user.username === 'magelock' || user.username === 'rylanfox') {
+                    currentUser = user.username;
+                    loginSection.style.display = 'none';
+                    messageSection.style.display = 'block';
+                } else {
+                    alert('Access denied. Only Certain people can send messages.');
+                }
+            })
+            .catch(console.error);
+        }
+    };
+
     document.getElementById("message-form").addEventListener("submit", function(event) {
         event.preventDefault();
 
         const message = document.getElementById("message").value;
         const webhookUrl = "https://discord.com/api/webhooks/1270225292127899763/GdtOZNVVUuq34-IorceH7_-CJWu-qM2Vu_u3-xVbpwgHknKjauCH_ynIafLWqtvfwN2-";
+        let webhookName = '';
+
+        if (currentUser === 'magelock') {
+            webhookName = 'Lock';
+        } else if (currentUser === 'rylanfox') {
+            webhookName = 'Rylan';
+        }
 
         fetch(webhookUrl, {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
             },
-            body: JSON.stringify({ content: message }),
+            body: JSON.stringify({
+                content: message,
+                username: webhookName
+            }),
         })
         .then(response => {
             if (response.ok) {
                 alert("Message sent!");
-                document.getElementById("message").value = ''; // Clear the textarea
+                document.getElementById("message").value = '';
             } else {
                 alert("Failed to send message.");
             }
