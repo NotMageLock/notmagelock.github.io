@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MageLock's Site</title>
+    <title>SWF Loader with Ruffle</title>
     <link rel="icon" href="/assets/favicon.ico" type="image/x-icon">
     <link href="https://fonts.googleapis.com/css2?family=Londrina+Solid:wght@400&display=swap" rel="stylesheet">
     <style>
@@ -15,172 +15,133 @@
             background-color: #1c1c1c;
             overflow: hidden;
             transition: margin-left 0.3s ease;
-        }
-
-        .sidebar {
-            height: 100%;
-            width: 250px;
-            position: fixed;
-            top: 0;
-            left: -250px;
-            background-color: #333;
-            color: white;
-            overflow-x: hidden;
-            transition: left 0.3s ease;
-            font-family: 'Londrina Solid', sans-serif;
-            padding-top: 60px;
-            z-index: 1;
             display: flex;
             flex-direction: column;
-            justify-content: flex-start;
-            align-items: flex-end;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
         }
 
-        .sidebar a {
-            padding: 15px;
-            display: block;
-            color: white;
-            text-decoration: none;
-            width: 100%;
+        h1 {
+            margin-bottom: 20px;
+            font-size: 2.5em;
             text-align: center;
         }
 
-        .sidebar a:hover {
-            background-color: #575757;
-        }
-
-        .sidebar.open {
-            left: 0;
-        }
-
-        .openbtn {
-            font-size: 20px;
+        .file-input-label, .url-input-label {
+            background-color: #61dafb;
+            padding: 10px 20px;
+            border-radius: 5px;
             cursor: pointer;
-            color: white;
-            border: none;
+            font-size: 16px;
+            margin-bottom: 10px;
+            display: inline-block;
+        }
+
+        input[type="file"], input[type="text"] {
+            display: none;
+        }
+
+        input[type="text"].url-input {
+            display: block;
+            background-color: #333;
+            color: #fff;
+            border: 2px solid #61dafb;
             padding: 10px;
-            position: fixed;
-            top: 10px;
-            left: 10px;
-            z-index: 2;
-            font-family: 'Londrina Solid', sans-serif;
-            background: none;
-            box-shadow: none;
-            transition: left 0.3s ease, top 0.3s ease;
+            border-radius: 5px;
+            margin-bottom: 20px;
+            width: calc(100% - 40px);
+            max-width: 600px;
         }
 
-        .sidebar.open ~ .openbtn {
-            position: absolute;
-            top: 10px;
-            left: calc(100% - 1715px);
+        #ruffle-container {
+            margin-top: 20px;
+            width: 800px;
+            height: 600px;
+            border: 2px solid #61dafb;
+            border-radius: 5px;
+            overflow: hidden;
+            display: none;
         }
 
-        main {
-            padding: 20px;
-            text-align: center;
-            margin-left: 0; /* Default margin-left */
-            transition: margin-left 0.3s ease;
-        }
-
-        .sidebar.open ~ main {
-            margin-left: 250px; /* Adjust margin when sidebar is open */
+        #error-message {
+            margin-top: 20px;
+            color: #ff6b6b;
+            font-size: 16px;
         }
 
         @media (max-width: 768px) {
-            .sidebar {
+            #ruffle-container {
                 width: 100%;
-                left: -100%;
+                height: auto;
             }
 
-            .sidebar.open {
-                left: 0;
-            }
-
-            .openbtn {
-                left: 10px;
-                top: 10px;
-            }
-
-            .sidebar.open ~ .openbtn {
-                left: calc(100% - 50px);
-            }
-
-            main {
-                margin-left: 0;
-            }
-        }
-
-        @media (min-width: 769px) and (max-width: 1024px) {
-            .sidebar {
-                width: 33%;
-                left: -33%;
-            }
-
-            .sidebar.open {
-                left: 0;
-            }
-
-            .openbtn {
-                left: 10px;
-                top: 10px;
-            }
-
-            .sidebar.open ~ .openbtn {
-                left: calc(100% - 50px);
-            }
-
-            main {
-                margin-left: 0; /* Adjust margin for tablet view */
-            }
-        }
-
-        @media (min-width: 1025px) {
-            .sidebar {
-                width: 250px;
+            input[type="text"].url-input {
+                width: 100%;
             }
         }
     </style>
 </head>
 <body>
-    <button class="openbtn" onclick="toggleSidebar()">☰</button>
+
+    <h1>SWF Loader with Ruffle</h1>
+
+    <label for="file-input" class="file-input-label">Choose a File</label>
+    <input type="file" id="file-input">
     
-    <aside class="sidebar" id="mySidebar">
-        <a href="">Home</a>
-        <a href="/Comms/">Comms</a>
-        <a href="/Links/">Links</a>
-        <a href="/Mods/">Mods</a>
-        <a href="/Games/Tetris">Tetris</a>
-    </aside>
-    
-    <main>
-        <section id="home">
-            <h1>Hey! I'm Lock.</h1>
-            <p>I'm Lock, an intermediate C# developer with an interest in modding VR games such as Gorilla Tag using the BepInEx framework. My other hobbies and interests include 3D art, game jams, Bloons TD, content creation, and more!</p>
-            <p>I do commission work as well. You can commission me to make a Gorilla Tag mod, a Shirt for GorillaShirts, or a 3D model for your game or something. You can do this by opening the lil menu at the top left of this page and selecting 'Comms'</p>
-        </section>
-    </main>
+    <input type="text" id="url-input" class="url-input" placeholder="Or enter SWF URL">
+    <label for="url-input" class="url-input-label">Load from URL</label>
+
+    <div id="ruffle-container"></div>
+    <div id="error-message"></div>
+
+    <script src="https://unpkg.com/@ruffle-rs/ruffle"></script>
     <script>
-        function toggleSidebar() {
-            const sidebar = document.getElementById('mySidebar');
-            const openbtn = document.querySelector('.openbtn');
-            const sidebarWidth = 250; // Width of the sidebar
+        document.addEventListener('DOMContentLoaded', () => {
+            const ruffle = window.RufflePlayer.newest();
+            const fileInput = document.getElementById('file-input');
+            const urlInput = document.getElementById('url-input');
+            const ruffleContainer = document.getElementById('ruffle-container');
+            const errorMessage = document.getElementById('error-message');
 
-            sidebar.classList.toggle('open');
-
-            if (window.innerWidth <= 768) { // For mobile devices
-                if (sidebar.classList.contains('open')) {
-                    openbtn.style.left = `calc(100% - ${sidebarWidth + -200}px)`; // Move button to the right side of the screen
-                } else {
-                    openbtn.style.left = '10px'; // Reset button to original position
-                }
-            } else { // For larger screens
-                if (sidebar.classList.contains('open')) {
-                    openbtn.style.left = `${sidebarWidth + -50}px`; // Move button to the right by sidebar width
-                } else {
-                    openbtn.style.left = '10px'; // Reset button to original position
-                }
+            function loadSWF(objectURL) {
+                ruffleContainer.innerHTML = ''; // Clear previous content
+                const player = ruffle.createPlayer();
+                player.style.width = '100%';
+                player.style.height = '100%';
+                ruffleContainer.appendChild(player);
+                player.load(objectURL);
+                ruffleContainer.style.display = 'block';
+                errorMessage.textContent = ''; // Clear any previous error messages
             }
-        }
+
+            fileInput.addEventListener('change', function(event) {
+                const file = event.target.files[0];
+                if (file) {
+                    const fileName = file.name.toLowerCase();
+                    if (fileName.endsWith('.swf')) {
+                        const objectURL = URL.createObjectURL(file);
+                        loadSWF(objectURL);
+                    } else {
+                        errorMessage.textContent = 'Error: Please select a valid SWF file.';
+                        ruffleContainer.style.display = 'none';
+                    }
+                }
+            });
+
+            urlInput.addEventListener('keypress', function(event) {
+                if (event.key === 'Enter') {
+                    const url = event.target.value.trim();
+                    if (url.endsWith('.swf')) {
+                        loadSWF(url);
+                    } else {
+                        errorMessage.textContent = 'Error: Please enter a valid SWF URL.';
+                        ruffleContainer.style.display = 'none';
+                    }
+                }
+            });
+        });
     </script>
+
 </body>
 </html>
