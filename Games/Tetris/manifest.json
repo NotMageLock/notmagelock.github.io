@@ -1,0 +1,16 @@
+{
+  "short_name": "Tetris",
+  "name": "Tetris",
+  "icons": [
+    {
+      "src": "/assets/favicon.ico",
+      "sizes": "64x64",
+      "type": "image/x-icon"
+    }
+  ],
+  "start_url": "/Games/Tetris/index.html",
+  "background_color": "#ffffff",
+  "display": "standalone",
+  "scope": "/Games/Tetris/",
+  "theme_color": "#000000"
+}
