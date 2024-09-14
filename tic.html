@@ -45,22 +45,22 @@
     </div>
 
     <!-- Firebase SDK -->
-    <script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-app.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-firestore.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.13.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.13.1/firebase-firestore.js"></script>
     <script>
-        // Replace with your Firebase configuration
+        // Your web app's Firebase configuration
         const firebaseConfig = {
-            apiKey: "YOUR_API_KEY",
-            authDomain: "YOUR_AUTH_DOMAIN",
-            projectId: "YOUR_PROJECT_ID",
-            storageBucket: "YOUR_STORAGE_BUCKET",
-            messagingSenderId: "YOUR_MESSAGING_SENDER_ID",
-            appId: "YOUR_APP_ID"
+            apiKey: "AIzaSyClON0ItX0wV1LgxYx4fJ1Eaf_CbRFGnm8",
+            authDomain: "tic-tac-toe-jekyll.firebaseapp.com",
+            projectId: "tic-tac-toe-jekyll",
+            storageBucket: "tic-tac-toe-jekyll.appspot.com",
+            messagingSenderId: "338780818272",
+            appId: "1:338780818272:web:6ee846b12f56278aa32c05"
         };
 
         // Initialize Firebase
         const app = firebase.initializeApp(firebaseConfig);
-        const db = firebase.firestore();
+        const db = firebase.firestore(app);
 
         const gameId = "multiplayer-tic-tac-toe";  // Single game room (you can change it)
         const gameDoc = db.collection("games").doc(gameId);
