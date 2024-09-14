@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Multiplayer Tic-Tac-Toe</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #f4f4f4;
+        }
+        #game {
+            display: grid;
+            grid-template-columns: repeat(3, 100px);
+            grid-template-rows: repeat(3, 100px);
+            gap: 5px;
+        }
+        .cell {
+            width: 100px;
+            height: 100px;
+            background-color: white;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 36px;
+            cursor: pointer;
+            border: 1px solid #333;
+        }
+        #status {
+            margin-top: 20px;
+            font-size: 24px;
+        }
+    </style>
+</head>
+<body>
+
+    <div>
+        <h1>Multiplayer Tic-Tac-Toe</h1>
+        <div id="game"></div>
+        <p id="status">Waiting for opponent...</p>
+    </div>
+
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-firestore.js"></script>
+    <script>
+        // Replace with your Firebase configuration
+        const firebaseConfig = {
+            apiKey: "YOUR_API_KEY",
+            authDomain: "YOUR_AUTH_DOMAIN",
+            projectId: "YOUR_PROJECT_ID",
+            storageBucket: "YOUR_STORAGE_BUCKET",
+            messagingSenderId: "YOUR_MESSAGING_SENDER_ID",
+            appId: "YOUR_APP_ID"
+        };
+
+        // Initialize Firebase
+        const app = firebase.initializeApp(firebaseConfig);
+        const db = firebase.firestore();
+
+        const gameId = "multiplayer-tic-tac-toe";  // Single game room (you can change it)
+        const gameDoc = db.collection("games").doc(gameId);
+
+        let gameData = null;
+        let playerSymbol = null;  // 'X' or 'O'
+
+        // Create Tic-Tac-Toe board
+        const game = document.getElementById("game");
+        const status = document.getElementById("status");
+        const cells = Array.from({ length: 9 }, (_, i) => {
+            const cell = document.createElement("div");
+            cell.className = "cell";
+            cell.addEventListener("click", () => makeMove(i));
+            game.appendChild(cell);
+            return cell;
+        });
+
+        // Load or create game state
+        gameDoc.get().then((doc) => {
+            if (doc.exists) {
+                gameData = doc.data();
+                playerSymbol = gameData.currentPlayer === 'X' ? 'O' : 'X';  // Assign symbol
+                updateBoard();
+            } else {
+                playerSymbol = 'X';  // First player is 'X'
+                gameData = { board: Array(9).fill(''), currentPlayer: 'X' };
+                gameDoc.set(gameData);
+            }
+            status.textContent = `You are player ${playerSymbol}`;
+        });
+
+        // Listen for real-time game updates
+        gameDoc.onSnapshot((doc) => {
+            gameData = doc.data();
+            updateBoard();
+        });
+
+        // Make a move
+        function makeMove(index) {
+            if (gameData.board[index] || gameData.currentPlayer !== playerSymbol) return;
+            gameData.board[index] = playerSymbol;
+            gameData.currentPlayer = playerSymbol === 'X' ? 'O' : 'X';
+            gameDoc.set(gameData);
+            checkWinner();
+        }
+
+        // Update the game board
+        function updateBoard() {
+            gameData.board.forEach((mark, i) => {
+                cells[i].textContent = mark;
+            });
+            status.textContent = gameData.currentPlayer === playerSymbol
+                ? "Your turn!"
+                : "Waiting for opponent...";
+        }
+
+        // Check for winner or draw
+        function checkWinner() {
+            const wins = [
+                [0, 1, 2], [3, 4, 5], [6, 7, 8], // rows
+                [0, 3, 6], [1, 4, 7], [2, 5, 8], // columns
+                [0, 4, 8], [2, 4, 6]             // diagonals
+            ];
+            const winner = wins.find(([a, b, c]) =>
+                gameData.board[a] && gameData.board[a] === gameData.board[b] && gameData.board[a] === gameData.board[c]
+            );
+            if (winner) {
+                status.textContent = `${gameData.board[winner[0]]} wins!`;
+                gameDoc.set({ ...gameData, currentPlayer: null });  // Stop the game
+            } else if (!gameData.board.includes('')) {
+                status.textContent = "It's a draw!";
+                gameDoc.set({ ...gameData, currentPlayer: null });  // Stop the game
+            }
+        }
+    </script>
+</body>
+</html>
