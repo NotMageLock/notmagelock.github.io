@@ -3,20 +3,26 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Meta Tag Generator</title>
+    <title>Meta Tag and HTML Generator</title>
 
-    <!-- URL-based redirection handling -->
+    <!-- Handling URL parameters for redirection or HTML display -->
     <script>
         window.addEventListener('DOMContentLoaded', (event) => {
             const params = new URLSearchParams(window.location.search);
-            const input = params.get('redirect');
-            const customName = params.get('name') || 'Generated Meta Tag';
+            const input = params.get('content');
+            const type = params.get('type');
+            const customName = params.get('name') || 'Generated Content';
             const outputDiv = document.getElementById("output");
 
-            // If URL contains a redirect, generate and display the meta tag
-            if (input) {
-                const metaTag = `<meta http-equiv="refresh" content="0; url=${input}">`;
-                outputDiv.innerHTML = `<h2>${customName}</h2><pre>${metaTag}</pre>`;
+            if (input && type) {
+                if (type === "redirect") {
+                    // Create a meta tag that redirects
+                    const metaTag = `<meta http-equiv="refresh" content="0; url=${input}">`;
+                    outputDiv.innerHTML = `<h2>${customName}</h2><pre>${metaTag}</pre>`;
+                } else if (type === "html") {
+                    // Display HTML content
+                    outputDiv.innerHTML = `<h2>${customName}</h2><pre>${decodeURIComponent(input)}</pre>`;
+                }
             }
         });
     </script>
@@ -37,7 +43,7 @@
 
     <div id="output"></div>
 
-    <!-- Script to process input and display result -->
+    <!-- Script to process input and generate link -->
     <script>
         document.getElementById("inputForm").addEventListener("submit", function(event) {
             event.preventDefault();
@@ -45,19 +51,18 @@
             const input = document.getElementById("htmlCode").value;
             const customName = document.getElementById("customName").value || 'Generated Meta Tag';
             const outputDiv = document.getElementById("output");
+            let generatedLink;
 
             if (input.startsWith("http")) {
-                // Generate meta tag for redirection
-                const metaTag = `<meta http-equiv="refresh" content="0; url=${input}">`;
-                outputDiv.innerHTML = `<h2>${customName}</h2><pre>${metaTag}</pre>`;
-
-                // Create a sharable link with the generated content in the URL
-                const sharableLink = `${window.location.origin}?redirect=${encodeURIComponent(input)}&name=${encodeURIComponent(customName)}`;
-                outputDiv.innerHTML += `<p>Share this link: <a href="${sharableLink}">${sharableLink}</a></p>`;
+                // Generate a link for redirection using URL parameters
+                generatedLink = `${window.location.origin}${window.location.pathname}?content=${encodeURIComponent(input)}&type=redirect&name=${encodeURIComponent(customName)}`;
             } else {
-                // Display the HTML code entered by the user
-                outputDiv.innerHTML = `<h2>${customName}</h2><pre>${input}</pre>`;
+                // Generate a link for HTML content using URL parameters
+                generatedLink = `${window.location.origin}${window.location.pathname}?content=${encodeURIComponent(input)}&type=html&name=${encodeURIComponent(customName)}`;
             }
+
+            // Display the generated link for the user
+            outputDiv.innerHTML = `<p>Here’s your custom link: <a href="${generatedLink}" target="_blank">${generatedLink}</a></p>`;
         });
     </script>
 </body>
