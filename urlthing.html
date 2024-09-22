@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>HTML Generator</title>
+    <title>Full HTML Page Generator</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -19,25 +19,19 @@
         }
         textarea {
             width: 100%;
+            height: 200px;
             margin-bottom: 10px;
         }
     </style>
 </head>
 <body>
-    <h1>HTML Code Generator</h1>
-    
-    <!-- Form to input HTML, CSS, JS -->
+    <h1>Full HTML Code Generator</h1>
+
+    <!-- Form to input full HTML code -->
     <div id="input-section">
         <form id="htmlForm">
-            <label for="htmlCode">HTML:</label><br>
-            <textarea id="htmlCode" rows="5"></textarea><br>
-
-            <label for="cssCode">CSS:</label><br>
-            <textarea id="cssCode" rows="5"></textarea><br>
-
-            <label for="jsCode">JavaScript:</label><br>
-            <textarea id="jsCode" rows="5"></textarea><br>
-
+            <label for="fullHtml">HTML (including head, body, script, etc.):</label><br>
+            <textarea id="fullHtml" placeholder="Paste full HTML here..."></textarea><br>
             <button type="button" onclick="generateLink()">Generate Link</button>
         </form>
     </div>
@@ -63,9 +57,7 @@
         function getQueryParams() {
             const params = new URLSearchParams(window.location.search);
             return {
-                html: params.get('html'),
-                css: params.get('css'),
-                js: params.get('js')
+                html: params.get('html')
             };
         }
 
@@ -73,47 +65,26 @@
         function loadGeneratedContent() {
             const query = getQueryParams();
 
-            if (query.html || query.css || query.js) {
+            if (query.html) {
                 // Hide the input section
                 document.getElementById('input-section').classList.add('hidden');
 
-                // Generate the combined content
-                const htmlContent = decodeContent(query.html || '');
-                const cssContent = decodeContent(query.css || '');
-                const jsContent = decodeContent(query.js || '');
+                // Decode and display the HTML content
+                const htmlContent = decodeContent(query.html);
 
-                const fullContent = `
-                    <!DOCTYPE html>
-                    <html lang="en">
-                    <head>
-                        <meta charset="UTF-8">
-                        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-                        <title>Generated Page</title>
-                        <style>${cssContent}</style>
-                    </head>
-                    <body>
-                        ${htmlContent}
-                        <script>${jsContent}<\/script>
-                    </body>
-                    </html>
-                `;
-
-                // Display the result in the iframe
+                // Inject the full HTML content into an iframe
                 const iframe = document.getElementById('outputFrame');
-                iframe.srcdoc = fullContent;
+                iframe.srcdoc = htmlContent;
 
                 // Show the result section
                 document.getElementById('result-section').classList.remove('hidden');
             }
         }
 
-        // Generate a link with query parameters
+        // Generate a link with the full HTML content as a query parameter
         function generateLink() {
-            const htmlCode = document.getElementById('htmlCode').value;
-            const cssCode = document.getElementById('cssCode').value;
-            const jsCode = document.getElementById('jsCode').value;
-
-            const queryString = `?html=${encodeContent(htmlCode)}&css=${encodeContent(cssCode)}&js=${encodeContent(jsCode)}`;
+            const fullHtml = document.getElementById('fullHtml').value;
+            const queryString = `?html=${encodeContent(fullHtml)}`;
 
             const newUrl = window.location.origin + window.location.pathname + queryString;
             window.location.href = newUrl;
