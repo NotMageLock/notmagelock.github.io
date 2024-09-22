@@ -3,67 +3,124 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Meta Tag and HTML Generator</title>
-
-    <!-- Handling URL parameters for redirection or HTML display -->
-    <script>
-        window.addEventListener('DOMContentLoaded', (event) => {
-            const params = new URLSearchParams(window.location.search);
-            const input = params.get('content');
-            const type = params.get('type');
-            const customName = params.get('name') || 'Generated Content';
-            const outputDiv = document.getElementById("output");
-
-            if (input && type) {
-                if (type === "redirect") {
-                    // Create a meta tag that redirects
-                    const metaTag = `<meta http-equiv="refresh" content="0; url=${input}">`;
-                    outputDiv.innerHTML = `<h2>${customName}</h2><pre>${metaTag}</pre>`;
-                } else if (type === "html") {
-                    // Display HTML content
-                    outputDiv.innerHTML = `<h2>${customName}</h2><pre>${decodeURIComponent(input)}</pre>`;
-                }
-            }
-        });
-    </script>
+    <title>HTML Generator</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            padding: 20px;
+        }
+        .hidden {
+            display: none;
+        }
+        iframe {
+            width: 100%;
+            height: 500px;
+            border: 1px solid #ccc;
+        }
+        textarea {
+            width: 100%;
+            margin-bottom: 10px;
+        }
+    </style>
 </head>
 <body>
-    <h1>Meta Tag and HTML Generator</h1>
+    <h1>HTML Code Generator</h1>
+    
+    <!-- Form to input HTML, CSS, JS -->
+    <div id="input-section">
+        <form id="htmlForm">
+            <label for="htmlCode">HTML:</label><br>
+            <textarea id="htmlCode" rows="5"></textarea><br>
 
-    <!-- Form for input -->
-    <form id="inputForm">
-        <label for="htmlCode">Enter HTML Code or URL:</label><br>
-        <input type="text" id="htmlCode" name="htmlCode" required><br><br>
+            <label for="cssCode">CSS:</label><br>
+            <textarea id="cssCode" rows="5"></textarea><br>
 
-        <label for="customName">Custom Name (optional):</label><br>
-        <input type="text" id="customName" name="customName"><br><br>
+            <label for="jsCode">JavaScript:</label><br>
+            <textarea id="jsCode" rows="5"></textarea><br>
 
-        <input type="submit" value="Generate">
-    </form>
+            <button type="button" onclick="generateLink()">Generate Link</button>
+        </form>
+    </div>
 
-    <div id="output"></div>
+    <!-- Display generated HTML -->
+    <div id="result-section" class="hidden">
+        <h2>Generated Output</h2>
+        <iframe id="outputFrame"></iframe>
+    </div>
 
-    <!-- Script to process input and generate link -->
     <script>
-        document.getElementById("inputForm").addEventListener("submit", function(event) {
-            event.preventDefault();
+        // Helper function to encode content
+        function encodeContent(content) {
+            return encodeURIComponent(content);
+        }
 
-            const input = document.getElementById("htmlCode").value;
-            const customName = document.getElementById("customName").value || 'Generated Meta Tag';
-            const outputDiv = document.getElementById("output");
-            let generatedLink;
+        // Helper function to decode content
+        function decodeContent(content) {
+            return decodeURIComponent(content);
+        }
 
-            if (input.startsWith("http")) {
-                // Generate a link for redirection using URL parameters
-                generatedLink = `${window.location.origin}${window.location.pathname}?content=${encodeURIComponent(input)}&type=redirect&name=${encodeURIComponent(customName)}`;
-            } else {
-                // Generate a link for HTML content using URL parameters
-                generatedLink = `${window.location.origin}${window.location.pathname}?content=${encodeURIComponent(input)}&type=html&name=${encodeURIComponent(customName)}`;
+        // Check for query parameters in the URL
+        function getQueryParams() {
+            const params = new URLSearchParams(window.location.search);
+            return {
+                html: params.get('html'),
+                css: params.get('css'),
+                js: params.get('js')
+            };
+        }
+
+        // Load generated content if query parameters are present
+        function loadGeneratedContent() {
+            const query = getQueryParams();
+
+            if (query.html || query.css || query.js) {
+                // Hide the input section
+                document.getElementById('input-section').classList.add('hidden');
+
+                // Generate the combined content
+                const htmlContent = decodeContent(query.html || '');
+                const cssContent = decodeContent(query.css || '');
+                const jsContent = decodeContent(query.js || '');
+
+                const fullContent = `
+                    <!DOCTYPE html>
+                    <html lang="en">
+                    <head>
+                        <meta charset="UTF-8">
+                        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+                        <title>Generated Page</title>
+                        <style>${cssContent}</style>
+                    </head>
+                    <body>
+                        ${htmlContent}
+                        <script>${jsContent}<\/script>
+                    </body>
+                    </html>
+                `;
+
+                // Display the result in the iframe
+                const iframe = document.getElementById('outputFrame');
+                iframe.srcdoc = fullContent;
+
+                // Show the result section
+                document.getElementById('result-section').classList.remove('hidden');
             }
+        }
 
-            // Display the generated link for the user
-            outputDiv.innerHTML = `<p>Here’s your custom link: <a href="${generatedLink}" target="_blank">${generatedLink}</a></p>`;
-        });
+        // Generate a link with query parameters
+        function generateLink() {
+            const htmlCode = document.getElementById('htmlCode').value;
+            const cssCode = document.getElementById('cssCode').value;
+            const jsCode = document.getElementById('jsCode').value;
+
+            const queryString = `?html=${encodeContent(htmlCode)}&css=${encodeContent(cssCode)}&js=${encodeContent(jsCode)}`;
+
+            const newUrl = window.location.origin + window.location.pathname + queryString;
+            window.location.href = newUrl;
+        }
+
+        // Call loadGeneratedContent when the page loads
+        window.onload = loadGeneratedContent;
     </script>
 </body>
 </html>
