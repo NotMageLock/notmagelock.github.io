@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>File Encoder/Decoder</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f9;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+
+        .container {
+            display: flex;
+            width: 80%;
+            max-width: 1200px;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+
+        .box {
+            flex: 1;
+            padding: 20px;
+            background-color: white;
+        }
+
+        .box h2 {
+            font-size: 1.5em;
+            margin-bottom: 10px;
+        }
+
+        .box input[type="file"] {
+            margin-bottom: 10px;
+        }
+
+        textarea {
+            width: 100%;
+            height: 300px;
+            padding: 10px;
+            font-size: 1em;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            resize: none;
+            background-color: #fafafa;
+            color: #333;
+        }
+
+        .buttons {
+            margin-top: 10px;
+            text-align: center;
+        }
+
+        button {
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            font-size: 1em;
+            cursor: pointer;
+            border-radius: 5px;
+        }
+
+        button:hover {
+            background-color: #45a049;
+        }
+
+        /* Styling for left and right sections */
+        .left, .right {
+            width: 50%;
+            padding: 20px;
+            box-sizing: border-box;
+        }
+
+        .right {
+            background-color: #f0f0f0;
+        }
+
+        /* Flex for layout */
+        .file-text, .text-file {
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+        }
+
+        .file-text textarea, .text-file textarea {
+            flex-grow: 1;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Left box: Convert file to text -->
+        <div class="box left">
+            <h2>File to Text Encoder</h2>
+            <div class="file-text">
+                <input type="file" id="fileInput">
+                <button onclick="encodeFile()">Encode to Base64</button>
+                <textarea id="output" placeholder="Base64 encoded text will appear here..."></textarea>
+            </div>
+        </div>
+
+        <!-- Right box: Convert text to file -->
+        <div class="box right">
+            <h2>Text to File Decoder</h2>
+            <div class="text-file">
+                <textarea id="input" placeholder="Paste Base64 encoded text here..."></textarea>
+                <div class="buttons">
+                    <button onclick="decodeFile()">Download File</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function encodeFile() {
+            const fileInput = document.getElementById('fileInput').files[0];
+            const reader = new FileReader();
+
+            reader.onload = function (e) {
+                const base64String = btoa(e.target.result);
+                document.getElementById('output').value = base64String;
+            };
+
+            if (fileInput) {
+                reader.readAsBinaryString(fileInput);
+            } else {
+                alert('Please select a file to encode.');
+            }
+        }
+
+        function decodeFile() {
+            const base64String = document.getElementById('input').value;
+            const binaryString = atob(base64String);
+            const len = binaryString.length;
+            const bytes = new Uint8Array(len);
+
+            for (let i = 0; i < len; i++) {
+                bytes[i] = binaryString.charCodeAt(i);
+            }
+
+            const blob = new Blob([bytes], { type: 'application/octet-stream' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'file.bin'; // Adjust the file extension and name as needed
+            a.click();
+            URL.revokeObjectURL(url);
+        }
+    </script>
+</body>
+</html>
