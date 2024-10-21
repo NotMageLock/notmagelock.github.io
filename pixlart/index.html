@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Pixel Art Editor</title>
+  <style>
+    body {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      background-color: #333;
+      margin: 0;
+    }
+    .editor {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+    canvas {
+      border: 1px solid #fff;
+      cursor: crosshair;
+    }
+    .controls {
+      margin-top: 10px;
+      display: flex;
+      gap: 10px;
+    }
+    input[type="color"] {
+      width: 40px;
+      height: 40px;
+      padding: 0;
+      border: none;
+      cursor: pointer;
+    }
+    button {
+      padding: 10px;
+      border: none;
+      background-color: #555;
+      color: white;
+      cursor: pointer;
+      border-radius: 5px;
+    }
+    button:hover {
+      background-color: #777;
+    }
+  </style>
+</head>
+<body>
+
+<div class="editor">
+  <canvas id="pixelCanvas" width="32" height="32"></canvas>
+  <div class="controls">
+    <input type="color" id="colorPicker" value="#ff0000">
+    <input type="file" id="imageLoader" accept="image/*">
+    <button id="exportButton">Export</button>
+  </div>
+</div>
+
+<script>
+  const canvas = document.getElementById('pixelCanvas');
+  const ctx = canvas.getContext('2d');
+  const colorPicker = document.getElementById('colorPicker');
+  const imageLoader = document.getElementById('imageLoader');
+  const exportButton = document.getElementById('exportButton');
+
+  const SCALE = 16; // Scale canvas to make it bigger visually
+  canvas.style.width = canvas.width * SCALE + 'px';
+  canvas.style.height = canvas.height * SCALE + 'px';
+
+  let isDrawing = false;
+
+  // Scale pixel art to avoid anti-aliasing.
+  ctx.imageSmoothingEnabled = false;
+
+  canvas.addEventListener('mousedown', () => isDrawing = true);
+  canvas.addEventListener('mouseup', () => isDrawing = false);
+  canvas.addEventListener('mousemove', drawPixel);
+
+  function drawPixel(e) {
+    if (!isDrawing) return;
+    const rect = canvas.getBoundingClientRect();
+    const x = Math.floor((e.clientX - rect.left) / SCALE);
+    const y = Math.floor((e.clientY - rect.top) / SCALE);
+    ctx.fillStyle = colorPicker.value;
+    ctx.fillRect(x, y, 1, 1);
+  }
+
+  // Load image onto the canvas
+  imageLoader.addEventListener('change', (e) => {
+    const reader = new FileReader();
+    reader.onload = function(event) {
+      const img = new Image();
+      img.onload = function() {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+      }
+      img.src = event.target.result;
+    }
+    reader.readAsDataURL(e.target.files[0]);
+  });
+
+  // Export the canvas as an image
+  exportButton.addEventListener('click', () => {
+    const link = document.createElement('a');
+    link.download = 'pixel-art.png';
+    link.href = canvas.toDataURL();
+    link.click();
+  });
+</script>
+
+</body>
+</html>
