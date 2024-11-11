@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Image GPS to Apple Maps</title>
+</head>
+<body>
+  <h2>Upload an Image to Get GPS Coordinates for Apple Maps</h2>
+  <input type="file" id="fileInput" accept="image/*">
+  <p id="output"></p>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/exif-js/2.3.0/exif.min.js"></script>
+  <script>
+    document.getElementById('fileInput').addEventListener('change', function(event) {
+      const file = event.target.files[0];
+      if (!file) return;
+
+      EXIF.getData(file, function() {
+        const lat = EXIF.getTag(this, "GPSLatitude");
+        const lon = EXIF.getTag(this, "GPSLongitude");
+        const latRef = EXIF.getTag(this, "GPSLatitudeRef") || "N";
+        const lonRef = EXIF.getTag(this, "GPSLongitudeRef") || "E";
+
+        if (lat && lon) {
+          const latDecimal = (lat[0] + lat[1] / 60 + lat[2] / 3600) * (latRef === "N" ? 1 : -1);
+          const lonDecimal = (lon[0] + lon[1] / 60 + lon[2] / 3600) * (lonRef === "E" ? 1 : -1);
+          const appleMapsUrl = `https://maps.apple.com/?q=${latDecimal},${lonDecimal}`;
+
+          document.getElementById('output').innerHTML = `
+            <p>Latitude: ${latDecimal}</p>
+            <p>Longitude: ${lonDecimal}</p>
+            <a href="${appleMapsUrl}" target="_blank">Open in Apple Maps</a>
+          `;
+        } else {
+          document.getElementById('output').textContent = "No GPS data found.";
+        }
+      });
+    });
+  </script>
+</body>
+</html>
