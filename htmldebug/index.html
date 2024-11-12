@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HTML Debugger</title>
+</head>
+<body>
+    <h2>Enter HTML Code</h2>
+    <textarea id="htmlInput" rows="10" cols="50" placeholder="Enter your HTML code here..."></textarea><br>
+    <button onclick="injectHTML()">Apply HTML</button>
+
+    <script>
+        function injectHTML() {
+            const userHtml = document.getElementById("htmlInput").value;
+            document.open();
+            document.write(userHtml);
+            document.close();
+        }
+    </script>
+</body>
+</html>
