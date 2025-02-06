@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Wicki</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div id="top-bar">
+        <img src="Assets/banner.jpeg" id="banner">
+        <input type="text" id="search" placeholder="Search...">
+        <div id="account-menu">
+            <img id="pfp" src="default_pfp.png">
+            <div id="account-dropdown">
+                <button id="sign-in">Sign in with GitHub</button>
+                <button id="create-page">Create Page</button>
+                <button id="sign-out">Sign Out</button>
+            </div>
+        </div>
+    </div>
+    
+    <div id="container">
+        <div id="sidebar"></div>
+        <div id="content"></div>
+    </div>
+
+    <div id="editor">
+        <textarea id="markdown-editor"></textarea>
+        <button id="commit-changes">Commit Changes</button>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
