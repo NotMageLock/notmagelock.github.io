@@ -3,26 +3,98 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Wicki</title>
-    <link rel="stylesheet" href="styles.css">
+    <title>Wicki Wiki</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 0; display: flex; height: 100vh; }
+        #sidebar { width: 200px; background: #2f3542; color: white; padding: 10px; overflow-y: auto; }
+        #sidebar a { display: block; padding: 10px; color: white; text-decoration: none; }
+        #sidebar a:hover { background: #3b4a5d; }
+        #content { flex-grow: 1; display: flex; flex-direction: column; padding: 20px; }
+        #header { display: flex; justify-content: space-between; align-items: center; padding: 10px; background: #1e2a37; color: white; }
+        #content-header { font-size: 24px; margin-bottom: 20px; }
+        #edit-area { width: 100%; height: 300px; margin-bottom: 20px; }
+        #export-area { width: 100%; text-align: right; }
+        .button { background: #4CAF50; color: white; border: none; padding: 10px; cursor: pointer; }
+        .button:hover { background: #45a049; }
+    </style>
 </head>
 <body>
-    <div id="top-bar">
-        <img src="Assets/banner.jpeg" id="banner">
-        <input type="text" id="search" placeholder="Search...">
-        <button id="create-page">Create Page</button>
+    <div id="sidebar">
+        <div id="sidebar-header"><strong>Wicki Wiki</strong></div>
+        <a href="#" onclick="loadPage('Home')">Home</a>
+        <a href="#" onclick="loadPage('About')">About</a>
+        <a href="#" onclick="loadPage('Contact')">Contact</a>
+        <a href="#" onclick="newPage()">+ New Page</a>
     </div>
-    
-    <div id="container">
-        <div id="sidebar"></div>
-        <div id="content"></div>
+    <div id="content">
+        <div id="header">
+            <div id="content-header">Home</div>
+            <div>
+                <button class="button" onclick="editPage()">Edit</button>
+                <button class="button" onclick="exportPage()">Export</button>
+            </div>
+        </div>
+        <div id="page-content">
+            <p>Welcome to the Home page!</p>
+        </div>
+        <div id="edit-area-container" style="display: none;">
+            <textarea id="edit-area"></textarea>
+        </div>
+        <div id="export-area" style="display: none;">
+            <textarea id="export-area-text" readonly></textarea>
+        </div>
     </div>
 
-    <div id="editor" style="display: none;">
-        <textarea id="markdown-editor"></textarea>
-        <button id="export-page">Export Page</button>
-    </div>
+    <script>
+        const repoOwner = 'NotMageLock';
+        const repoName = 'Wicki';
 
-    <script src="script.js"></script>
+        async function fetchPageContent(pageName) {
+            const url = `https://raw.githubusercontent.com/${repoOwner}/${repoName}/main/${pageName}.page`;
+            const response = await fetch(url);
+            const data = await response.text();
+            return data;
+        }
+
+        function loadPage(page) {
+            document.getElementById('content-header').innerText = page;
+            fetchPageContent(page).then(content => {
+                document.getElementById('page-content').innerHTML = marked.parse(content);
+            });
+        }
+
+        function editPage() {
+            const page = document.getElementById('content-header').innerText;
+            fetchPageContent(page).then(content => {
+                document.getElementById('edit-area').value = content;
+                document.getElementById('edit-area-container').style.display = 'block';
+            });
+        }
+
+        function exportPage() {
+            const content = document.getElementById('edit-area').value;
+            const pageName = document.getElementById('content-header').innerText + '.page';
+            const blob = new Blob([content], { type: 'text/markdown' });
+            const link = document.createElement('a');
+            link.href = URL.createObjectURL(blob);
+            link.download = pageName;
+            link.click();
+        }
+
+        function newPage() {
+            const pageName = prompt('Enter new page name:');
+            if (pageName) {
+                const newLink = document.createElement('a');
+                newLink.href = '#';
+                newLink.innerText = pageName;
+                newLink.onclick = function () { loadPage(pageName); };
+                document.getElementById('sidebar').appendChild(newLink);
+                loadPage(pageName);
+            }
+        }
+
+        loadPage('Home');
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
 </body>
 </html>
