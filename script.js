@@ -24,4 +24,29 @@ async function loadPage(pageName) {
     document.getElementById("content").innerHTML = marked(content.text);
 }
 
+function createPage() {
+    document.getElementById("editor").style.display = "block";
+    document.getElementById("markdown-editor").value = "";
+}
+
+function exportPage() {
+    const pageName = prompt("Enter a name for the new page (without extension):");
+    if (pageName) {
+        const content = {
+            text: document.getElementById("markdown-editor").value
+        };
+        const jsonStr = JSON.stringify(content, null, 2);
+
+        // Create a downloadable .page file
+        const blob = new Blob([jsonStr], { type: 'application/json' });
+        const link = document.createElement("a");
+        link.href = URL.createObjectURL(blob);
+        link.download = `${pageName}.page`;
+        link.click();
+    }
+}
+
+document.getElementById("create-page").addEventListener("click", createPage);
+document.getElementById("export-page").addEventListener("click", exportPage);
+
 document.addEventListener("DOMContentLoaded", loadSidebar);
