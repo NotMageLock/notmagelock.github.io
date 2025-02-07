@@ -21,8 +21,9 @@
 <body>
     <div id="sidebar">
         <div id="sidebar-header"><strong>Wicki Wiki</strong></div>
-        <a href="#" onclick="loadPage('Main')">Main</a>
         <a href="#" onclick="newPage()">+ New Page</a>
+        <a href="#" id="main-page-link" onclick="loadPage('Main')">Main</a>
+        <div id="page-links"></div>
     </div>
     <div id="content">
         <div id="header">
@@ -47,11 +48,41 @@
         const repoOwner = 'NotMageLock';
         const repoName = 'Wicki';
 
+        async function fetchPageList() {
+            const url = `https://api.github.com/repos/${repoOwner}/${repoName}/contents/`;
+            const response = await fetch(url);
+            const files = await response.json();
+
+            let pageFiles = files
+                .filter(file => file.name.endsWith('.page'))
+                .map(file => file.name.replace('.page', ''))
+                .sort((a, b) => a.localeCompare(b));
+
+            pageFiles = pageFiles.filter(p => p !== 'Main');
+            pageFiles.unshift('Main');
+
+            populateSidebar(pageFiles);
+        }
+
+        function populateSidebar(pages) {
+            const sidebar = document.getElementById('page-links');
+            sidebar.innerHTML = '';
+
+            pages.forEach(page => {
+                if (page === 'Main') return;
+                const link = document.createElement('a');
+                link.href = '#';
+                link.innerText = page;
+                link.onclick = () => loadPage(page);
+                sidebar.appendChild(link);
+            });
+        }
+
         async function fetchPageContent(pageName) {
             const url = `https://raw.githubusercontent.com/${repoOwner}/${repoName}/main/${pageName}.page`;
             const response = await fetch(url);
-            const data = await response.text();
-            return data;
+            if (!response.ok) return "Page not found.";
+            return await response.text();
         }
 
         function loadPage(page) {
@@ -85,12 +116,13 @@
                 const newLink = document.createElement('a');
                 newLink.href = '#';
                 newLink.innerText = pageName;
-                newLink.onclick = function () { loadPage(pageName); };
-                document.getElementById('sidebar').appendChild(newLink);
+                newLink.onclick = () => loadPage(pageName);
+                document.getElementById('page-links').appendChild(newLink);
                 loadPage(pageName);
             }
         }
 
+        fetchPageList();
         loadPage('Main');
     </script>
     <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
