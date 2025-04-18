@@ -4,11 +4,12 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>MageLock</title>
+
   <style>
     :root {
       --bg: #0e0e0e;
       --fg: #f4f4f4;
-      --accent: #00d4ff;
+      --accent: #5E2988;
     }
 
     * {
@@ -27,6 +28,7 @@
       height: 100vh;
       text-align: center;
       padding: 2rem;
+      background: radial-gradient(at bottom left, rgba(4, 0, 22.5, 1), rgba(30, 15, 0, 1) 100%);
     }
 
     .container {
@@ -59,12 +61,147 @@
     a:hover {
       background-color: #00aacc;
     }
+
+    .top-bar {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 60px;
+      display: flex;
+      align-items: center;
+      z-index: 999;
+      transition: all 0.4s ease;
+    }
+
+    #menu-toggle {
+      margin-left: 1rem;
+      padding: 0.5rem 1rem;
+      font-size: 1.5rem;
+      background: none;
+      border: none;
+      color: var(--fg);
+      cursor: pointer;
+      z-index: 1000;
+      transition: all 0.4s ease;
+    }
+
+    #top-menu {
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 60px;
+      background-color: var(--accent);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 2rem;
+      transition: all 0.4s ease;
+      z-index: 0;
+      background-color: rgba(0, 0, 0, 0.6);
+    }
+
+    #top-menu a {
+      color: #fff;
+      background-color: transparent;
+      font-weight: bold;
+      text-decoration: none;
+      font-size: 1.1rem;
+      padding: 0.5rem 1rem;
+      border-radius: 5px;
+      transition: background-color 0.2s ease;
+    }
+
+    #top-menu a:hover {
+      background-color: rgba(255, 255, 255, 0.2);
+    }
+
+
+    .top-bar.active #top-menu {
+      left: 0;
+    }
+
+    .top-bar.active #menu-toggle {
+      margin-left: auto;
+      margin-right: 1rem;
+    }
+    .socials {
+      position: fixed;
+      bottom: 1rem;
+      right: 1rem;
+      display: flex;
+      gap: 1rem;
+    }
+
+    .socials a {
+      width: 40px;
+      height: 40px;
+      display: block;
+      transition: transform 0.2s;
+      background: none;
+      padding: 0;
+    }
+
+    .socials img {
+      width: 100%;
+      height: 100%;
+      filter: brightness(0) saturate(100%) invert(21%) sepia(65%) saturate(1300%) hue-rotate(245deg) brightness(95%) contrast(105%);
+    }
+
+    .socials a:hover {
+      transform: scale(1.2);
+    }
+
   </style>
 </head>
+<div class="socials">
+  <a href="https://discord.gg/SzK7s4dzWB" target="_blank" aria-label="Discord">
+    <img src="https://notmagelock.github.io/discord.svg" alt="Discord Logo">
+  </a>
+  <a href="https://www.youtube.com/@MageLock" target="_blank" aria-label="YouTube">
+    <img src="https://notmagelock.github.io/youtube.svg" alt="YouTube Logo">
+  </a>
+  <a href="https://github.com/NotMageLock" target="_blank" aria-label="GitHub">
+    <img src="https://notmagelock.github.io/github.svg" alt="GitHub Logo">
+  </a>
+</div>
 <body>
   <div class="container">
-    <h1>Wow</h1>
-    <p>Hi</p>
+    <h1>MageLock</h1>
+    <p>Heya!</p>
+    <p>I'm magelock, I like coding silly stuff</p>
+    <p>I'm currently working on a tycoon game about building computers.</p>
+    <p>I use godot to make games, and bepinex to mod (unity) games </p>
+    <p>i also enjoy making 3d art</p>
   </div>
+  <div class="top-bar">
+  <button id="menu-toggle">☰</button>
+  <nav id="top-menu">
+    <span
+      onclick="window.location.href='https://www.google.com/search?client=firefox-b-1-d&q=minesweeper'"
+      style="cursor: pointer; color: white; text-decoration: none;">
+      Bust outta this joint
+    </span>
+  </nav>
+</div>
+
 </body>
 </html>
+<script src='https://storage.ko-fi.com/cdn/scripts/overlay-widget.js'></script>
+<script>
+  kofiWidgetOverlay.draw('magelock', {
+    'type': 'floating-chat',
+    'floating-chat.donateButton.text': 'Support me!',
+    'floating-chat.donateButton.background-color': '#5E2988',
+    'floating-chat.donateButton.text-color': '#fff'
+  });
+</script>
+<script>
+  const toggle = document.getElementById('menu-toggle');
+  const bar = document.querySelector('.top-bar');
+
+  toggle.addEventListener('click', () => {
+    bar.classList.toggle('active');
+  });
+</script>
