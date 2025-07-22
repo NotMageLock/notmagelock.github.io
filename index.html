@@ -9,6 +9,7 @@
       margin: 0;
       padding: 0;
       height: 100%;
+      width: 100%;
       background: #111;
       font-family: monospace;
       overflow: hidden;
@@ -21,6 +22,7 @@
       display: flex;
       justify-content: center;
       align-items: center;
+      font-size: 4vw;
     }
 
     #snow-canvas {
@@ -30,6 +32,7 @@
       width: 100vw;
       height: 100vh;
       z-index: -4;
+      pointer-events: none;
     }
 
     #crt {
@@ -41,12 +44,12 @@
       z-index: -3;
       background: repeating-linear-gradient(
         to bottom,
-        rgba(255, 255, 255, 0.03),
-        rgba(255, 255, 255, 0.03) 2px,
-        transparent 2px,
-        transparent 4px
+        rgba(255, 255, 255, 0.05),
+        rgba(255, 255, 255, 0.05) 3px,
+        transparent 3px,
+        transparent 6px
       );
-      animation: flicker 0.12s infinite;
+      animation: flicker 0.1s infinite;
       mix-blend-mode: overlay;
     }
 
@@ -57,36 +60,31 @@
       width: 100vw;
       height: 100vh;
       z-index: -2;
-      background: radial-gradient(ellipse at center, rgba(0,0,0,0) 50%, rgba(0,0,0,0.6) 100%);
+      background: radial-gradient(ellipse at center, rgba(0,0,0,0) 50%, rgba(0,0,0,0.75) 100%);
       pointer-events: none;
     }
 
     #markdown {
+      position: relative;
       z-index: 1;
-      padding: 3vw;
-      max-width: 90vw;
-      max-height: 90vh;
+      padding: 5vw;
+      max-width: 100vw;
+      max-height: 100vh;
       overflow-y: auto;
       backdrop-filter: blur(0.5px);
       transform: scaleY(0.98);
+      line-height: 1.4;
     }
 
     @keyframes flicker {
-      0% { opacity: 0.95; }
+      0% { opacity: 0.92; }
       50% { opacity: 1; }
-      100% { opacity: 0.97; }
+      100% { opacity: 0.95; }
     }
 
     @media (max-width: 600px) {
-      #markdown {
-        font-size: 14px;
-        padding: 5vw;
-      }
-    }
-
-    @media (min-width: 601px) {
-      #markdown {
-        font-size: 16px;
+      body {
+        font-size: 6vw;
       }
     }
   </style>
