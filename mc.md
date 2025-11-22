@@ -1,7 +1,7 @@
 # Minecraft modding tutorial for dorito man
 
 
-* Step 1: Go to https://prismlauncher.org/download/windows/ and get the installer exe
+* Step 1: Go to [Here](https://prismlauncher.org/download/windows/) and get the installer exe
 
 
 * Step 2: Run the program to set it up
